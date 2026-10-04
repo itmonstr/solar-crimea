@@ -24,43 +24,61 @@ function initHeroVideo() {
   const toggle = document.getElementById('heroVideoToggle');
   if (!video || !toggle) return;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reducedMotion.matches || navigator.connection?.saveData) return;
+  const autoAllowed = !reducedMotion.matches && !navigator.connection?.saveData;
 
   let inView = true;
   let manuallyPaused = false;
+  const showPlayControl = () => {
+    toggle.hidden = false;
+    toggle.innerHTML = 'Включить видео <span aria-hidden="true">▶</span>';
+    toggle.setAttribute('aria-label', 'Включить фоновое видео');
+    toggle.setAttribute('aria-pressed', 'false');
+  };
+  const showPauseControl = () => {
+    toggle.hidden = false;
+    toggle.innerHTML = 'Пауза <span aria-hidden="true">Ⅱ</span>';
+    toggle.setAttribute('aria-label', 'Остановить фоновое видео');
+    toggle.setAttribute('aria-pressed', 'true');
+  };
   const play = () => {
     if (manuallyPaused || !inView || document.hidden) return;
-    video.play().catch(() => { toggle.hidden = true; });
+    if (!video.getAttribute('src')) {
+      video.src = video.dataset.src;
+      video.load();
+    }
+    video.play().catch(showPlayControl);
   };
   video.addEventListener('playing', () => {
     video.classList.add('is-ready');
-    toggle.hidden = false;
+    showPauseControl();
   });
   video.addEventListener('error', () => {
     video.classList.remove('is-ready');
     toggle.hidden = true;
   });
   toggle.addEventListener('click', () => {
-    manuallyPaused = !manuallyPaused;
-    if (manuallyPaused) video.pause();
-    else play();
-    toggle.innerHTML = manuallyPaused ? 'Включить <span aria-hidden="true">▶</span>' : 'Пауза <span aria-hidden="true">Ⅱ</span>';
-    toggle.setAttribute('aria-label', manuallyPaused ? 'Включить фоновое видео' : 'Остановить фоновое видео');
-    toggle.setAttribute('aria-pressed', String(manuallyPaused));
+    if (video.paused) {
+      manuallyPaused = false;
+      play();
+    } else {
+      manuallyPaused = true;
+      video.pause();
+      showPlayControl();
+    }
   });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) video.pause();
-    else play();
+    else if (autoAllowed) play();
   });
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
       inView = entries[0].isIntersecting;
-      if (inView) play(); else video.pause();
+      if (inView && autoAllowed) play();
+      else if (!inView) video.pause();
     }, { threshold: .05 }).observe(video);
   }
-  video.src = video.dataset.src;
-  video.load();
-  play();
+  if (autoAllowed) play();
+  else showPlayControl();
 }
 
 function initMobileKitRail() {
