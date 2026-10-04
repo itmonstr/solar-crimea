@@ -135,10 +135,8 @@
 @media (max-width: 600px) {
   .container { padding-inline: 20px; }
   .hero { background-position: 62% center; }
-  .hero::before { display: block; background: linear-gradient(180deg, rgba(235,235,235,.43) 0%, rgba(235,235,235,.28) 42%, rgba(235,235,235,.14) 72%, rgba(235,235,235,.06) 100%); }
+  .hero::before { display: block; background: linear-gradient(180deg, rgba(235,235,235,.64) 0%, rgba(235,235,235,.57) 42%, rgba(235,235,235,.46) 72%, rgba(235,235,235,.3) 100%); }
   .hero-video { object-position: 62% center; filter: saturate(1.18) contrast(1.14); }
-  .hero-title, .hero .eyebrow, .hero-lead, .hero-benefits { text-shadow: 0 1px 3px rgba(245,245,245,.95), 0 0 18px rgba(245,245,245,.82); }
-  .hero-lead { padding: 12px 14px; background: rgba(235,235,235,.58); backdrop-filter: blur(5px); }
   .hero-video-toggle { right: 20px; bottom: 120px; }
   .hero-title { font-size: clamp(1.7rem, 8.4vw, 3.2rem); }
   .hero .eyebrow { font-size: .58rem; line-height: 1.7; }
