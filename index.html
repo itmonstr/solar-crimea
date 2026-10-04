@@ -54,7 +54,6 @@
 
   <!-- ============ 1. ПЕРВЫЙ ЭКРАН — «обложка журнала» ============ -->
   <section class="hero" id="hero">
-    <video class="hero-video" id="heroVideo" muted loop playsinline preload="none" poster="assets/video/solar-rooftops-poster.jpg" aria-hidden="true" data-src="assets/video/solar-rooftops.mp4"></video>
     <div class="hero-sun" aria-hidden="true">
       <svg viewBox="0 0 200 200" fill="none">
         <g class="hero-sun-rays" stroke="#C47A52" stroke-width="2" stroke-linecap="round">
@@ -71,6 +70,8 @@
     <div class="container">
       <span class="eyebrow reveal">Автономные энергосистемы · Крым и Севастополь</span>
       <h1 class="hero-title reveal" style="--d:.06s">Солнечные<br>электростанции<br><span class="accent">под&nbsp;ключ</span></h1>
+      <video class="hero-video" id="heroVideo" muted loop playsinline preload="none" poster="assets/video/solar-rooftops-poster.jpg" aria-hidden="true" data-src="assets/video/solar-rooftops.mp4"></video>
+      <button class="hero-video-toggle" id="heroVideoToggle" type="button" aria-label="Остановить фоновое видео" aria-pressed="false" hidden>Пауза <span aria-hidden="true">Ⅱ</span></button>
 
       <div class="hero-split">
         <div class="hero-left reveal" style="--d:.12s">
@@ -89,8 +90,6 @@
         </div>
 
       </div>
-
-      <button class="hero-video-toggle" id="heroVideoToggle" type="button" aria-label="Остановить фоновое видео" aria-pressed="false" hidden>Пауза <span aria-hidden="true">Ⅱ</span></button>
 
       <!-- Полоса характеристик -->
       <ul class="hero-specs reveal">
