@@ -1,0 +1,5 @@
+# Temporary scrape and raw files
+raw_site.html
+test_get.html
+*.py
+*.json
