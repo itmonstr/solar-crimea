@@ -15,7 +15,43 @@ document.addEventListener('DOMContentLoaded', () => {
   initModals();
   initPhoneMask();
   initDepthEffects();
+  initMobileKitRail();
 });
+
+function initMobileKitRail() {
+  const rail = document.querySelector('#kits .menu');
+  if (!rail) return;
+  const cards = [...rail.children];
+  const controls = document.createElement('div');
+  controls.className = 'mobile-rail-nav';
+  controls.innerHTML = '<span>Выберите мощность <span class="rail-count">01 / 03</span></span><div><button type="button" aria-label="Предыдущий комплект">←</button><button type="button" aria-label="Следующий комплект">→</button></div>';
+  rail.before(controls);
+  rail.tabIndex = 0;
+  rail.setAttribute('aria-label', 'Готовые комплекты: прокрутите, чтобы сравнить');
+  const [prev, next] = controls.querySelectorAll('button');
+  const count = controls.querySelector('.rail-count');
+  const update = () => {
+    const position = Math.max(0, rail.scrollLeft);
+    const end = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const index = end - position < 3 ? cards.length - 1 : Math.min(cards.length - 1, Math.round(position / (cards[0].offsetWidth + 14)));
+    count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
+    prev.disabled = position < 3;
+    next.disabled = end - position < 3;
+  };
+  const move = direction => rail.scrollBy({ left: direction * (cards[0].offsetWidth + 14), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  prev.addEventListener('click', () => move(-1));
+  next.addEventListener('click', () => move(1));
+  rail.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  rail.addEventListener('keydown', event => {
+    if (event.target !== rail || !window.matchMedia('(max-width: 600px)').matches) return;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      move(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+  update();
+}
 
 function initDepthEffects() {
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');

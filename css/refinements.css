@@ -163,3 +163,79 @@
   .energy-panel, .energy-panel::after { animation: none; }
   #kits .menu-thumb, .offer-media > img { transition: none; transform: none; }
 }
+
+.mobile-rail-nav { display: none; }
+/* Phone layouts use horizontal browsing, two-column indexes and image pairs. */
+@media (max-width: 600px) {
+  .section { padding-block: 64px; }
+  .section .head { margin-bottom: 30px; }
+  .hero-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; }
+  .hero-benefits li { align-items: flex-start; font-size: .76rem; line-height: 1.5; }
+  .hero-benefits .check { flex-shrink: 0; margin-top: 2px; }
+  .hero-benefits li:last-child { grid-column: 1 / -1; }
+
+  .mobile-rail-nav { display: flex; justify-content: space-between; align-items: center; margin: 0 0 14px; gap: 12px; font-size: .78rem; }
+  .mobile-rail-nav > div { display: flex; gap: 6px; }
+  .mobile-rail-nav button { width: 44px; height: 44px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font-size: 1.2rem; }
+  .mobile-rail-nav button:disabled { opacity: .3; cursor: default; }
+  .rail-count { display: block; color: var(--accent-dark); font-size: .7rem; margin-top: 3px; letter-spacing: .1em; }
+  #kits .menu { display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; margin-inline: -20px; padding: 0 20px 14px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+  #kits .menu-row { display: flex; flex: 0 0 86%; scroll-snap-align: start; scroll-snap-stop: always; }
+  #kits .kit-card-top { font-size: .62rem; min-height: 52px; padding: 14px 18px; }
+  #kits .kit-card-content { padding: 22px 18px; }
+  #kits .menu-power { margin-bottom: 16px; }
+  #kits .menu-power .power-number { font-size: 3.5rem; }
+  #kits .menu-name { font-size: 1.14rem; }
+  #kits .menu-features { font-size: .85rem; line-height: 1.55; }
+  #kits .kit-image-note { font-size: .52rem; }
+  #kits .kit-card-bottom { padding-top: 22px; }
+  #kits .kit-card-bottom .btn { padding: 13px 16px; font-size: .7rem; }
+  .calculator { margin-top: 26px; }
+
+  /* Six installation tasks share a compact technical matrix. */
+  .manifest { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .manifest-item:nth-child(n) { min-height: 215px; padding: 20px 14px; gap: 15px; border-right: 1px solid var(--dark-line); }
+  .manifest-item:nth-child(2n) { border-right: 0; }
+  .manifest-num { font-size: 1.5rem; }
+  .manifest-icon { width: 28px; height: 28px; margin-top: -40px; }
+  .manifest-body h3 { font-family: var(--font-body); font-size: 1rem; line-height: 1.3; letter-spacing: 0; margin-bottom: 10px; }
+  .manifest-body p { font-size: .8rem; line-height: 1.5; }
+
+  /* Equipment photos and copy remain adjacent, alternating sides. */
+  #equipment .zig-row { display: grid; grid-template-columns: 38% minmax(0, 1fr); gap: 18px; align-items: center; padding-block: 24px; min-height: 0; }
+  #equipment .zig-row--rev { grid-template-columns: minmax(0, 1fr) 38%; }
+  #equipment .zig-media { padding: 12px 0; min-height: 175px; height: 100%; }
+  #equipment .zig-media img { width: 100%; max-height: 185px; object-fit: contain; filter: drop-shadow(5px 10px 8px rgba(0,0,0,.12)); }
+  #equipment .zig-body { padding: 0; min-width: 0; }
+  #equipment .zig-row--rev .zig-body { order: 0; }
+  #equipment .zig-tag { font-size: .5rem; line-height: 1.6; letter-spacing: .02em; }
+  #equipment .zig-body h3 { font-family: var(--font-body); font-size: 1.15rem; line-height: 1.2; letter-spacing: -.025em; }
+  #equipment .zig-body p { font-size: .82rem; line-height: 1.5; margin-bottom: 12px; }
+  #equipment .zig-chip { padding: 5px 8px; font-size: .64rem; }
+
+  /* A photo mosaic: one establishing image, then paired details. */
+  .portfolio-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; }
+  .portfolio-filters .filter-btn { flex: 0 0 auto; font-family: var(--font-body); font-size: .78rem; min-height: 44px; padding: 10px 14px; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; columns: auto; }
+  .gallery-tile:nth-child(n) { min-width: 0; margin: 0; aspect-ratio: .8; }
+  .gallery-tile:first-child { grid-column: 1 / -1; aspect-ratio: 1.3; }
+  .gallery-tile img { height: 100%; width: 100%; object-fit: cover; }
+  .gallery-overlay { padding: 12px; }
+  .gallery-title { font-family: var(--font-body); font-size: .85rem; line-height: 1.25; }
+  .gallery-tag { font-size: .55rem; }
+
+  /* Two products per row, with touch-sized actions and readable names. */
+  #catalog .pricelist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  #catalog .product-row { grid-template-columns: minmax(0, 1fr); grid-template-rows: 155px auto 1fr auto auto; min-width: 0; }
+  #catalog .pl-thumb { height: 155px; padding: 10px; }
+  #catalog .pl-info { padding: 14px 12px 10px; }
+  #catalog .pl-name { font-family: var(--font-body); font-size: .95rem; line-height: 1.3; overflow-wrap: anywhere; }
+  #catalog .pl-model { font-size: .7rem; overflow-wrap: anywhere; }
+  #catalog .pl-price { padding: 0 12px 14px; font-family: var(--font-body); font-size: 1.03rem; }
+  #catalog .product-row > .btn { grid-column: 1; grid-row: 4; margin: 0 12px 7px; padding: 10px 5px; min-height: 44px; font-family: var(--font-body); font-size: .82rem; }
+  #catalog .product-details-btn { grid-column: 1; grid-row: 5; margin: 0 12px 12px; padding: 10px 5px; min-height: 44px; font-family: var(--font-body); font-size: .82rem; }
+  #catalog .catalog-tab { min-height: 44px; padding-inline: 14px; font-family: var(--font-body); font-size: .85rem; }
+  .offer-media { min-height: 300px; }
+  .prep-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .prep-cell { font-size: .7rem; padding: 16px 7px; }
+}
