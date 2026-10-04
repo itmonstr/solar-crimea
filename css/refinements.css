@@ -5,7 +5,14 @@
 .brand-icon img { width: 100%; height: 100%; }
 .brand, .header-phone { flex-shrink: 0; }
 .brand-sub, .header-phone-num, .nav-item { white-space: nowrap; }
-.hero { background-position: center; }
+.hero { isolation: isolate; background: #d9ddd9 url('../assets/video/solar-rooftops-poster.jpg') center center / cover no-repeat; }
+.hero::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(235,235,235,.96) 0%, rgba(235,235,235,.9) 31%, rgba(235,235,235,.54) 58%, rgba(235,235,235,.1) 100%); }
+.hero > .container { position: relative; z-index: 2; }
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; opacity: 0; transition: opacity .6s ease; pointer-events: none; }
+.hero-video.is-ready { opacity: 1; }
+.hero-video-toggle { position: absolute; right: clamp(20px, 3.2vw, 64px); bottom: 140px; z-index: 3; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(51,51,51,.28); background: rgba(235,235,235,.85); color: var(--ink); padding: 8px 12px; font-family: var(--font-body); font-size: .72rem; cursor: pointer; }
+.hero-video-toggle[hidden] { display: none; }
+.hero-video-toggle span { font-size: 1rem; line-height: 1; }
 .hero-title { font-size: clamp(3.3rem, 7.7vw, 8rem); }
 .hero-left { max-width: 560px; }
 .check { background: url('../assets/icons/check.svg') center / 17px no-repeat; border: 0; border-radius: 0; }
@@ -127,6 +134,10 @@
 }
 @media (max-width: 600px) {
   .container { padding-inline: 20px; }
+  .hero { background-position: 62% center; }
+  .hero::before { background: linear-gradient(180deg, rgba(235,235,235,.98) 0%, rgba(235,235,235,.91) 56%, rgba(235,235,235,.57) 100%); }
+  .hero-video { object-position: 62% center; }
+  .hero-video-toggle { right: 20px; bottom: 120px; }
   .hero-title { font-size: clamp(1.7rem, 8.4vw, 3.2rem); }
   .hero .eyebrow { font-size: .58rem; line-height: 1.7; }
   .header-right { gap: 8px; }
@@ -239,3 +250,5 @@
   .prep-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .prep-cell { font-size: .7rem; padding: 16px 7px; }
 }
+
+.hero-video-toggle { position: relative; right: auto; bottom: auto; width: max-content; margin: 18px 0 18px auto; }

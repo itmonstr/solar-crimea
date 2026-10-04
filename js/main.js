@@ -16,7 +16,52 @@ document.addEventListener('DOMContentLoaded', () => {
   initPhoneMask();
   initDepthEffects();
   initMobileKitRail();
+  initHeroVideo();
 });
+
+function initHeroVideo() {
+  const video = document.getElementById('heroVideo');
+  const toggle = document.getElementById('heroVideoToggle');
+  if (!video || !toggle) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reducedMotion.matches || navigator.connection?.saveData) return;
+
+  let inView = true;
+  let manuallyPaused = false;
+  const play = () => {
+    if (manuallyPaused || !inView || document.hidden) return;
+    video.play().catch(() => { toggle.hidden = true; });
+  };
+  video.addEventListener('playing', () => {
+    video.classList.add('is-ready');
+    toggle.hidden = false;
+  });
+  video.addEventListener('error', () => {
+    video.classList.remove('is-ready');
+    toggle.hidden = true;
+  });
+  toggle.addEventListener('click', () => {
+    manuallyPaused = !manuallyPaused;
+    if (manuallyPaused) video.pause();
+    else play();
+    toggle.innerHTML = manuallyPaused ? 'Включить <span aria-hidden="true">▶</span>' : 'Пауза <span aria-hidden="true">Ⅱ</span>';
+    toggle.setAttribute('aria-label', manuallyPaused ? 'Включить фоновое видео' : 'Остановить фоновое видео');
+    toggle.setAttribute('aria-pressed', String(manuallyPaused));
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) video.pause();
+    else play();
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      inView = entries[0].isIntersecting;
+      if (inView) play(); else video.pause();
+    }, { threshold: .05 }).observe(video);
+  }
+  video.src = video.dataset.src;
+  video.load();
+  play();
+}
 
 function initMobileKitRail() {
   const rail = document.querySelector('#kits .menu');
