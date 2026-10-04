@@ -139,7 +139,9 @@
   .hero-video { object-position: 62% center; filter: saturate(1.18) contrast(1.14); }
   .hero-video-toggle { right: 20px; bottom: 120px; }
   .hero-title { font-size: clamp(1.7rem, 8.4vw, 3.2rem); }
-  .hero .eyebrow { font-size: .58rem; line-height: 1.7; }
+  .hero-title .accent { font-weight: 600; }
+  .hero-lead, .hero-benefits li { color: #242424; font-weight: 600; }
+  .hero .eyebrow { font-size: .58rem; line-height: 1.7; font-weight: 600; }
   .header-right { gap: 8px; }
   .header-right > .btn { display: none; }
   #kits .menu-row { display: flex; }
