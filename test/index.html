@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Тестовый подбор системы — ДЭМ</title>
+  <link rel="icon" href="../assets/img/cat_jinko.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="test.css?v=20261009-1">
+</head>
+<body>
+  <header class="test-header">
+    <a class="brand" href="../"><span class="brand-mark">☼</span><span><strong>ДЭМ</strong><small>дом · энергия · монтаж</small></span></a>
+    <span class="test-badge">ТЕСТОВАЯ ВЕРСИЯ</span>
+    <a class="header-back" href="../">Вернуться на сайт ↗</a>
+  </header>
+
+  <main class="test-main">
+    <section class="test-hero">
+      <div class="eyebrow">Предварительный подбор · Крым и Севастополь</div>
+      <h1>Какая система<br><em>резервного питания</em><br>подойдёт вам?</h1>
+      <p>Ответьте на вопросы о вашем объекте и нагрузках. В конце покажем подходящий уровень системы и объясним рекомендацию.</p>
+      <div class="trust-row"><span>✓ результат сразу</span><span>✓ без указания цен</span><span>✓ можно сохранить в PDF</span></div>
+    </section>
+
+    <section class="quiz-card" id="quiz" aria-live="polite">
+      <div class="quiz-intro" id="intro">
+        <span class="step-label">Бесплатный предварительный подбор</span>
+        <h2>Начните с вашей ситуации</h2>
+        <p>Форма подстроится под объект и покажет только нужные вопросы.</p>
+        <div class="start-steps"><span><b>1</b> выберите объект</span><span><b>2</b> отметьте нагрузки</span><span><b>3</b> получите рекомендацию</span></div>
+        <button class="primary-button" id="startQuiz">Начать подбор <span>→</span></button>
+        <small>Это займёт около 5 минут</small>
+      </div>
+      <div class="quiz-body" id="quizBody" hidden>
+        <div class="quiz-progress-wrap"><div class="progress"><span id="progressBar"></span></div><span id="stepLabel">Шаг 1</span></div>
+        <div id="question"></div>
+        <div class="quiz-actions"><button class="back-button" id="backBtn">← Назад</button><button class="primary-button" id="nextBtn">Продолжить <span>→</span></button></div>
+      </div>
+    </section>
+  </main>
+  <footer class="test-footer">© 2026 ДЭМ · Тестовая страница не отображается в меню сайта</footer>
+  <script src="test.js?v=20261009-1"></script>
+</body>
+</html>
