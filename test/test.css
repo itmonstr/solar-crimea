@@ -44,11 +44,10 @@
 .result-card h2 { margin: 12px 0; color: var(--accent); }
 .result-why { margin-bottom: 14px; }
 .result-config { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; }
-.result-config div { min-width: 0; padding: 11px; border: 1px solid #d3cec6; background: #fff; }
-.result-config b { display: block; overflow-wrap: anywhere; font-family: var(--font-heading); font-size: .88rem; }
-.result-config span { display: block; margin-top: 5px; color: var(--ink-soft); font-size: .68rem; }
+.result-config.four { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.result-config div { min-width: 0; padding: 11px; border: 1px solid #d3cec6; background: #fff; font-size: .76rem; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
 .result-note { font-size: .78rem !important; }
 .test-calculator button:focus-visible, .test-calculator input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 800px) { .test-calculator-grid { grid-template-columns: 1fr; } .test-quiz-aside { padding: 18px 20px; } .test-quiz-aside ol { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 15px 0 0; } .test-quiz-aside li { padding: 0; border: 0; font-size: .76rem; } .test-quiz-aside p { margin-top: 12px; } }
-@media (max-width: 600px) { .test-calculator { padding: 22px 18px; margin-top: 36px; } .test-calculator-head { display: block; margin-bottom: 20px; } .test-time { display: block; margin-top: 9px; } .options-list { grid-template-columns: 1fr; } .result-config { grid-template-columns: 1fr; } .result-config div { display: flex; align-items: center; gap: 12px; } .result-config span { margin: 0; } .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; } .test-primary-button { max-width: 100%; } }
+@media (max-width: 600px) { .test-calculator { padding: 22px 18px; margin-top: 36px; } .test-calculator-head { display: block; margin-bottom: 20px; } .test-time { display: block; margin-top: 9px; } .options-list, .result-config, .result-config.four { grid-template-columns: 1fr; } .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; } .test-primary-button { max-width: 100%; } }
 @media print { body > :not(#kits) { display: none !important; } #kits .container > :not(.test-calculator) { display: none !important; } .test-quiz-aside, .test-calculator-head, .quiz-progress-wrap, .test-quiz-actions { display: none !important; } .test-calculator { display: block !important; margin: 0 !important; border: 0; box-shadow: none; } .test-calculator-grid { display: block; } }
