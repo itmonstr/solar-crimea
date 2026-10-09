@@ -1,15 +1,17 @@
 (() => {
   const state = {
-    name: '', phone: '', email: '', pain: [], objectType: '',
-    apartmentLoads: [], apartmentTime: '', apartmentFull: '', apartmentSimplicity: '',
-    houseLoads: [], houseDuration: '', houseComfort: '', housePowerful: [], housePhase: '', houseGenerator: '', houseGeneratorConnect: '',
-    businessImpact: [], businessCritical: '', businessDuration: '', businessGenerator: ''
+    name: '', phone: '', email: '', pain: [], painOther: '', objectType: '',
+    apartmentLoads: [], apartmentOther: '', apartmentTime: '', apartmentFull: '', apartmentSimplicity: '',
+    houseLoads: [], houseOther: '', houseDuration: '', houseComfort: '', housePowerful: [], housePowerfulOther: '', housePhase: '', houseGenerator: '', houseGeneratorConnect: '',
+    businessImpact: [], businessOther: '', businessCritical: '', businessCriticalOther: '', businessDuration: '', businessGenerator: ''
   };
   const quizBody = document.getElementById('quizBody');
-  const intro = document.getElementById('intro');
   const question = document.getElementById('question');
   const next = document.getElementById('nextBtn');
   const back = document.getElementById('backBtn');
+  const actionBar = quizBody.querySelector(':scope > .test-quiz-actions');
+  const aside = document.querySelector('#quiz .test-quiz-aside');
+  const asideIntro = aside.innerHTML;
   const progress = document.getElementById('progressBar');
   const stepLabel = document.getElementById('stepLabel');
   let steps = [], index = 0;
@@ -24,7 +26,7 @@
   const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   function buildSteps() {
-    steps = ['contact','pain','object'];
+    steps = ['object','pain'];
     if (state.objectType === 'Квартира') { steps.push('apartmentLoads','apartmentTime'); if (state.apartmentTime === 'Более 12 часов') steps.push('apartmentFull'); steps.push('apartmentSimplicity','result'); }
     if (state.objectType === 'Частный дом') { steps.push('houseLoads','houseDuration','houseComfort','housePowerful'); if (state.housePowerful.some(x => x !== 'Нет')) steps.push('housePhase'); steps.push('houseGenerator'); if (['Да','Планируем установить'].includes(state.houseGenerator)) steps.push('houseGeneratorConnect'); steps.push('result'); }
     if (state.objectType === 'Бизнес') steps.push('businessImpact','businessCritical','businessDuration','businessGenerator','result');
@@ -40,14 +42,20 @@
     const key = steps[index];
     if (key === 'contact') return state.name.trim().length > 1 && state.phone.replace(/\D/g,'').length >= 10 && /\S+@\S+\.\S+/.test(state.email);
     if (key === 'object') return !!state.objectType;
-    if (key === 'pain' || key === 'apartmentLoads' || key === 'houseLoads' || key === 'businessImpact') return state[key].length > 0 && (!state[key].includes('Другое') || state[`${key === 'pain' ? 'pain' : key === 'apartmentLoads' ? 'apartmentOther' : key === 'houseLoads' ? 'houseOther' : 'businessOther'}`]?.trim());
-    if (['apartmentTime','apartmentFull','apartmentSimplicity','houseDuration','houseComfort','housePhase','houseGenerator','houseGeneratorConnect','businessCritical','businessDuration','businessGenerator'].includes(key)) return !!state[key];
-    if (key === 'housePowerful') return state.housePowerful.length > 0;
+    if (key === 'pain' || key === 'apartmentLoads' || key === 'houseLoads' || key === 'businessImpact') {
+      const otherKey = {pain:'painOther',apartmentLoads:'apartmentOther',houseLoads:'houseOther',businessImpact:'businessOther'}[key];
+      return state[key].length > 0 && (!state[key].includes('Другое') || !!state[otherKey].trim());
+    }
+    if (['apartmentTime','apartmentFull','apartmentSimplicity','houseDuration','houseComfort','housePhase','houseGenerator','houseGeneratorConnect','businessDuration','businessGenerator'].includes(key)) return !!state[key];
+    if (key === 'housePowerful') return state.housePowerful.length > 0 && (!state.housePowerful.includes('Другое') || !!state.housePowerfulOther.trim());
+    if (key === 'businessCritical') return !!state.businessCritical && (state.businessCritical !== 'Другое' || !!state.businessCriticalOther.trim());
     return true;
   }
   function options(title, copy, key, values, multi = false) {
     const selected = multi ? state[key] : [state[key]];
-    return `<h2 class="question-title">${title}</h2><p class="question-copy">${copy}</p><div class="options-list">${values.map(v => `<button class="option-button ${selected.includes(v) ? 'selected' : ''}" data-key="${key}" data-value="${esc(v)}" data-multi="${multi}"><span class="option-indicator"></span><span><b>${esc(v)}</b></span></button>`).join('')}</div>`;
+    const otherKey = {pain:'painOther',apartmentLoads:'apartmentOther',houseLoads:'houseOther',housePowerful:'housePowerfulOther',businessImpact:'businessOther',businessCritical:'businessCriticalOther'}[key];
+    const otherField = otherKey && selected.includes('Другое') ? `<label class="other-field">Уточните свой вариант<input class="text-field" data-other-input="${otherKey}" value="${esc(state[otherKey])}" placeholder="Опишите своими словами"></label>` : '';
+    return `<h2 class="question-title">${title}</h2><p class="question-copy">${copy}</p><div class="options-list">${values.map(v => `<button class="option-button ${selected.includes(v) ? 'selected' : ''}" type="button" aria-pressed="${selected.includes(v)}" data-key="${key}" data-value="${esc(v)}" data-multi="${multi}"><span class="option-indicator"></span><span><b>${esc(v)}</b></span></button>`).join('')}</div>${otherField}`;
   }
   function result() {
     let r;
@@ -57,13 +65,16 @@
       const powerfulCount = state.housePowerful.filter(x => x !== 'Нет').length;
       r = state.houseComfort === 'Не хочу замечать отключение' || state.houseDuration === 'Более 12 часов' || (powerfulCount >= 3 && state.houseComfort === 'Хочу продолжать жить практически как обычно') ? {badge:'Высокий уровень резервирования',title:'Система на базе Deye 15 кВт',why:'Высокий уровень комфорта и мощные потребители требуют серьёзной системы.',cfg:['15 кВт · 3 фазы','24 панели Jinko 640 Вт','3 × 5,12 кВт·ч'],note:state.housePhase === '1 фаза' ? 'Указан однофазный ввод: итоговую конфигурацию нужно скорректировать после обследования.' : 'Точный состав определяется после анализа фазности и нагрузок.'} : state.houseDuration === '4–8 часов' || state.houseComfort === 'Хочу продолжать жить практически как обычно' || powerfulCount > 0 ? {badge:'Комфортный резерв для дома',title:'Система на базе Deye 8 кВт',why:'Позволяет сохранить более широкий набор домашних нагрузок.',cfg:['8 кВт · 1 фаза','16 панелей Jinko 640 Вт','2 × 5,12 кВт·ч'],note:'Состав панелей и аккумуляторов уточняется после расчёта фактической нагрузки.'} : {badge:'Критические нагрузки',title:'Система на базе Deye 6 кВт',why:'Подходит для отопления, холодильника, насосов, освещения и интернета.',cfg:['6 кВт · 1 фаза','8 панелей Jinko 640 Вт','1 × 5,12 кВт·ч'],note:'Систему можно расширить аккумуляторами, генератором или солнечной генерацией.'};
     } else r = {badge:'Решение для бизнеса',title:'Индивидуальная система резервного электроснабжения',why:'Для бизнеса универсальный комплект подобрать невозможно: важны простой, режим работы и требования к непрерывности.',cfg:['Гибридный инвертор','Расчёт аккумуляторов','Генератор при необходимости'],note:'Следующий шаг — уточнение критических нагрузок и технических условий.'};
-    return `<div class="result-card"><span class="result-badge">${r.badge}</span><h2>${r.title}</h2><p class="result-why">${r.why}</p><div class="result-config">${r.cfg.map((x,i)=>`<div><b>${esc(x)}</b><span>${['мощность','ёмкость / панели','состав системы'][i]}</span></div>`).join('')}</div><p class="result-note">${r.note}</p><div class="quiz-actions"><button class="back-button" id="backResult">← Изменить ответы</button><button class="primary-button" id="printResult">Сохранить в PDF <span>↗</span></button></div></div>`;
+    const labels = state.objectType === 'Бизнес' ? ['оборудование','накопитель','дополнение'] : state.objectType === 'Квартира' ? ['станция / инвертор','ёмкость','формат'] : ['инвертор','солнечные панели','аккумуляторы'];
+    return `<div class="result-card"><span class="result-badge">${r.badge}</span><h2>${r.title}</h2><p class="result-why">${r.why}</p><div class="result-config">${r.cfg.map((x,i)=>`<div><b>${esc(x)}</b><span>${labels[i]}</span></div>`).join('')}</div><p class="result-note">${r.note}</p><div class="test-quiz-actions"><button class="test-back-button" type="button" id="backResult">← Изменить ответы</button><button class="test-primary-button" type="button" id="printResult">Сохранить в PDF <span>↗</span></button></div></div>`;
   }
   function render() {
     buildSteps(); const key = steps[index]; const total = Math.max(steps.length - 1, 1); progress.style.width = `${Math.max(30,index/total*100)}%`; stepLabel.textContent = key === 'result' ? 'Результат' : `Шаг ${index + 1}`; back.disabled = index === 0;
-    if (key === 'contact') question.innerHTML = `<h2 class="question-title">Расскажите, как с вами связаться</h2><p class="question-copy">Контакты нужны, чтобы сохранить результат и при необходимости уточнить нагрузку.</p><div class="options-list"><input class="text-field" id="name" placeholder="Как вас зовут?" value="${esc(state.name)}"><input class="text-field" id="phone" placeholder="Номер телефона" value="${esc(state.phone)}"><input class="text-field" id="email" placeholder="Электронная почта" value="${esc(state.email)}"></div>`;
+    actionBar.hidden = key === 'result';
+    aside.innerHTML = key === 'result' ? `<span class="test-aside-label">ВАШ СЦЕНАРИЙ</span><dl><div><dt>Объект</dt><dd>${esc(state.objectType)}</dd></div><div><dt>Автономность</dt><dd>${esc(state.apartmentTime || state.houseDuration || state.businessDuration || 'Уточняется')}</dd></div><div><dt>Что важно сохранить</dt><dd>${esc((state.apartmentLoads.length ? state.apartmentLoads : state.houseLoads.length ? state.houseLoads : state.businessImpact).slice(0,3).join(', ') || 'По выбранным ответам')}</dd></div></dl><p>Рекомендация предварительная. Инженер проверит нагрузку и фазность перед подбором оборудования.</p>` : asideIntro;
+    if (key === 'contact') question.innerHTML = `<h2 class="question-title">Расскажите, как с вами связаться</h2><p class="question-copy">Контакты останутся только в этой форме. Рекомендация появится на экране после ответов.</p><div class="options-list"><label class="contact-field">Ваше имя<input class="text-field" id="name" autocomplete="name" placeholder="Имя" value="${esc(state.name)}"></label><label class="contact-field">Номер телефона<input class="text-field" id="phone" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00" value="${esc(state.phone)}"></label><label class="contact-field">Электронная почта<input class="text-field" id="email" autocomplete="email" inputmode="email" placeholder="name@example.ru" value="${esc(state.email)}"></label></div>`;
     else if (key === 'pain') question.innerHTML = options('Какие последствия отключения наиболее критичны?','Выберите один или несколько вариантов.',key,pain,true);
-    else if (key === 'object') question.innerHTML = options('Где нужно обеспечить резерв?','После выбора покажем только нужные вопросы.',key,['Квартира','Частный дом','Бизнес']);
+    else if (key === 'object') question.innerHTML = options('Где нужно обеспечить резерв?','После выбора покажем только нужные вопросы.','objectType',['Квартира','Частный дом','Бизнес']);
     else if (key === 'apartmentLoads') question.innerHTML = options('Что нужно сохранить в квартире?','Можно выбрать несколько вариантов.',key,apartmentLoads,true);
     else if (key === 'apartmentTime') question.innerHTML = options('На сколько часов нужна автономность?','Укажите желаемое время работы.',key,durations);
     else if (key === 'apartmentFull') question.innerHTML = options('Нужно запитать всю квартиру?','Или только выбранные приборы?',key,['Да','Нет']);
@@ -82,12 +93,13 @@
     else question.innerHTML = result();
     next.hidden = key === 'result';
     question.querySelectorAll('[data-key]').forEach(btn => btn.addEventListener('click', () => btn.dataset.multi === 'true' ? toggle(btn.dataset.key, btn.dataset.value) : setValue(btn.dataset.key, btn.dataset.value)));
+    question.querySelectorAll('[data-other-input]').forEach(input => input.addEventListener('input', e => { state[input.dataset.otherInput] = e.target.value; next.disabled = !valid(); }));
     ['name','phone','email'].forEach(id => $(id)?.addEventListener('input', e => { state[id] = e.target.value; next.disabled = !valid(); }));
     next.disabled = !valid();
     $('printResult')?.addEventListener('click', () => window.print());
     $('backResult')?.addEventListener('click', () => { index = Math.max(0,index-1); render(); });
   }
-  document.getElementById('startQuiz').addEventListener('click', () => { intro.hidden = true; quizBody.hidden = false; index = 0; render(); });
   next.addEventListener('click', () => { if (valid() && index < steps.length - 1) { index++; render(); } });
   back.addEventListener('click', () => { index = Math.max(0,index-1); render(); });
+  render();
 })();

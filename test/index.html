@@ -1,49 +1,670 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>Тестовый подбор системы — ДЭМ</title>
-  <link rel="icon" href="../assets/img/cat_jinko.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ДЭМ — тестовый подбор системы</title>
+  <meta name="description" content="ДЭМ (Дом · Энергия · Монтаж) — проектирование и монтаж гибридных солнечных электростанций под ключ в Севастополе и Крыму. Инверторы Deye, батареи Dyness, панели Jinko, станции PECRON.">
+  <link rel="icon" href="assets/img/cat_jinko.png" type="image/png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="test.css?v=20261009-1">
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/refinements.css?v=20261004-hero3">
+  <link rel="stylesheet" href="test/test.css?v=20261009-2">
 </head>
 <body>
-  <header class="test-header">
-    <a class="brand" href="../"><span class="brand-mark">☼</span><span><strong>ДЭМ</strong><small>дом · энергия · монтаж</small></span></a>
-    <span class="test-badge">ТЕСТОВАЯ ВЕРСИЯ</span>
-    <a class="header-back" href="../">Вернуться на сайт ↗</a>
+
+  <!-- ============ ШАПКА ============ -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="test/#hero" class="brand" aria-label="ДЭМ — Дом Энергия Монтаж">
+        <span class="brand-icon" aria-hidden="true"><img src="assets/icons/sun.svg" alt=""></span>
+        <span class="brand-text">
+          <span class="brand-name">ДЭМ</span>
+          <span class="brand-sub">дом · энергия · монтаж</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="navMenu" aria-label="Основное меню">
+        <a href="test/#kits" class="nav-item">Комплекты</a>
+        <a href="test/#installation" class="nav-item">Установка</a>
+        <a href="test/#equipment" class="nav-item">Оборудование</a>
+        <a href="test/#how-we-work" class="nav-item">Как работаем</a>
+        <a href="test/#portfolio" class="nav-item">Наши работы</a>
+        <a href="test/#catalog" class="nav-item">Каталог</a>
+        <a href="test/#generator" class="nav-item">Генератор</a>
+        <a href="test/#faq" class="nav-item">FAQ</a>
+        <a href="test/#contacts" class="nav-item">Контакты</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="https://t.me/+79835025222" target="_blank" class="icon-btn" title="Написать в Telegram" aria-label="Telegram"><img src="assets/icons/send.svg" width="22" height="22" alt="">
+        </a>
+        <a href="tel:+79835025222" class="header-phone">
+          <span class="header-phone-num">+7 (983) 502-52-22</span>
+          <span class="header-phone-sub">Севастополь и Крым</span>
+        </a>
+        <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ консультации инженера">Консультация</button>
+        <button class="burger" id="burgerToggle" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
   </header>
 
-  <main class="test-main">
-    <section class="test-hero">
-      <div class="eyebrow">Предварительный подбор · Крым и Севастополь</div>
-      <h1>Какая система<br><em>резервного питания</em><br>подойдёт вам?</h1>
-      <p>Ответьте на вопросы о вашем объекте и нагрузках. В конце покажем подходящий уровень системы и объясним рекомендацию.</p>
-      <div class="trust-row"><span>✓ результат сразу</span><span>✓ без указания цен</span><span>✓ можно сохранить в PDF</span></div>
-    </section>
+  <!-- ============ 1. ПЕРВЫЙ ЭКРАН — «обложка журнала» ============ -->
+  <section class="hero" id="hero">
+    <video class="hero-video" id="heroVideo" muted loop playsinline preload="none" poster="assets/video/solar-rooftops-poster.jpg" aria-hidden="true" data-src="assets/video/solar-rooftops.mp4"></video>
+    <div class="hero-sun" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none">
+        <g class="hero-sun-rays" stroke="#C47A52" stroke-width="2" stroke-linecap="round">
+          <line x1="100" y1="8" x2="100" y2="34"/><line x1="100" y1="166" x2="100" y2="192"/>
+          <line x1="8" y1="100" x2="34" y2="100"/><line x1="166" y1="100" x2="192" y2="100"/>
+          <line x1="35" y1="35" x2="53" y2="53"/><line x1="147" y1="147" x2="165" y2="165"/>
+          <line x1="165" y1="35" x2="147" y2="53"/><line x1="53" y1="147" x2="35" y2="165"/>
+        </g>
+        <circle cx="100" cy="100" r="34" fill="none" stroke="#C47A52" stroke-width="2"/>
+        <circle cx="100" cy="100" r="22" fill="#C47A52" opacity="0.12"/>
+      </svg>
+    </div>
 
-    <section class="quiz-card" id="quiz" aria-live="polite">
-      <div class="quiz-intro" id="intro">
-        <span class="step-label">Бесплатный предварительный подбор</span>
-        <h2>Начните с вашей ситуации</h2>
-        <p>Форма подстроится под объект и покажет только нужные вопросы.</p>
-        <div class="start-steps"><span><b>1</b> выберите объект</span><span><b>2</b> отметьте нагрузки</span><span><b>3</b> получите рекомендацию</span></div>
-        <button class="primary-button" id="startQuiz">Начать подбор <span>→</span></button>
-        <small>Это займёт около 5 минут</small>
+    <div class="container">
+      <span class="eyebrow reveal">Автономные энергосистемы · Крым и Севастополь</span>
+      <h1 class="hero-title reveal" style="--d:.06s">Солнечные<br>электростанции<br><span class="accent">под&nbsp;ключ</span></h1>
+
+      <div class="hero-split">
+        <div class="hero-left reveal" style="--d:.12s">
+          <p class="hero-lead">Проектируем, устанавливаем и запускаем готовые гибридные станции для дома, дачи и бизнеса. Полная независимость от городской сети и веерных отключений — круглый год.</p>
+          <ul class="hero-benefits">
+            <li><span class="check"></span>Подбираем оборудование под вас</li>
+            <li><span class="check"></span>Профессиональный монтаж и настройка</li>
+            <li><span class="check"></span>Запуск всей системы</li>
+            <li><span class="check"></span>Автоматическая работа системы</li>
+            <li><span class="check"></span>Сервис и поддержка</li>
+          </ul>
+          <div class="hero-actions">
+            <a href="test/#kits" class="btn btn-primary btn-lg">Подобрать систему</a>
+            <button class="btn btn-outline btn-lg open-lead-modal" data-title="Получить консультацию">Получить консультацию</button>
+          </div>
+        </div>
+
       </div>
-      <div class="quiz-body" id="quizBody" hidden>
-        <div class="quiz-progress-wrap"><div class="progress"><span id="progressBar"></span></div><span id="stepLabel">Шаг 1</span></div>
-        <div id="question"></div>
-        <div class="quiz-actions"><button class="back-button" id="backBtn">← Назад</button><button class="primary-button" id="nextBtn">Продолжить <span>→</span></button></div>
+
+      <button class="hero-video-toggle" id="heroVideoToggle" type="button" aria-label="Остановить фоновое видео" aria-pressed="false" hidden>Пауза <span aria-hidden="true">Ⅱ</span></button>
+
+      <!-- Полоса характеристик -->
+      <ul class="hero-specs reveal">
+        <li><span class="spec-num"><span class="counter" data-count="15">0</span> лет</span><span class="spec-label">официальная гарантия</span></li>
+        <li><span class="spec-num"><span class="counter" data-count="285">0</span></span><span class="spec-label">солнечных дней в Крыму</span></li>
+        <li><span class="spec-num"><span class="counter" data-count="6000">0</span>+</span><span class="spec-label">циклов ресурса АКБ</span></li>
+        <li><span class="spec-num">до <span class="counter" data-count="90">0</span>%</span><span class="spec-label">экономия на счетах</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ БЕГУЩАЯ СТРОКА ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Солнечные панели</span><i></i><span>Гибридные инверторы Deye</span><i></i><span>Аккумуляторы LiFePO4</span><i></i><span>Монтаж под ключ</span><i></i><span>Гарантия 15 лет</span><i></i><span>Севастополь · Крым</span><i></i>
+    </div>
+  </div>
+
+  <!-- ============ 2. КОМПЛЕКТЫ — «меню-прайс» ============ -->
+  <section class="section" id="kits">
+    <div class="container">
+      <div class="head reveal">
+        <span class="kicker">01 · Готовые комплекты</span>
+        <h2 class="h2">Три проверенных решения<br><span class="accent">под ваш дом</span></h2>
       </div>
-    </section>
-  </main>
-  <footer class="test-footer">© 2026 ДЭМ · Тестовая страница не отображается в меню сайта</footer>
-  <script src="test.js?v=20261009-1"></script>
+
+      <div class="menu">
+        <article class="menu-row reveal">
+          <div class="kit-card-top"><span>Комплект / 01</span><span>Под ключ</span></div>
+          <figure class="kit-visual" data-depth>
+            <img class="menu-thumb" src="assets/img/kit_1.png" alt="Солнечная панель, инвертор и аккумулятор — комплект 1" loading="lazy">
+            <span class="kit-image-note">Панели + инвертор + аккумулятор</span>
+          </figure>
+          <div class="kit-card-content">
+            <div class="menu-power"><span class="power-number">6</span><span class="power-unit">кВт</span></div>
+            <div class="menu-body"><h3 class="menu-name">Автономный</h3><p class="menu-features">Deye 6 кВт · 8 панелей Jinko 640W · АКБ Dyness 100 А·ч · защита и монтаж</p></div>
+            <div class="kit-card-bottom"><span class="kit-phase">1 фаза</span><button class="btn btn-outline open-lead-modal" data-title="Заказ: Комплект №1 (6 кВт)">Подробнее <span aria-hidden="true">↗</span></button></div>
+          </div>
+        </article>
+        <article class="menu-row menu-row--hl reveal">
+          <div class="kit-card-top"><span>Комплект / 02</span><span class="menu-flag">Хит продаж</span></div>
+          <figure class="kit-visual" data-depth>
+            <img class="menu-thumb" src="assets/img/kit_2.png" alt="Солнечная панель, инвертор и аккумулятор — комплект 2" loading="lazy">
+            <span class="kit-image-note">Панели + инвертор + аккумулятор</span>
+          </figure>
+          <div class="kit-card-content">
+            <div class="menu-power"><span class="power-number">8</span><span class="power-unit">кВт</span></div>
+            <div class="menu-body"><h3 class="menu-name">Оптимальный</h3><p class="menu-features">Deye 8 кВт · 16 панелей Jinko 640W · АКБ Dyness 314 А·ч · крепёж и Wi-Fi</p><p class="menu-note">Экономия до 180 000 ₽ / год</p></div>
+            <div class="kit-card-bottom"><span class="kit-phase">1 фаза</span><button class="btn btn-primary open-lead-modal" data-title="Заказ: Комплект №2 (8 кВт)">Подробнее <span aria-hidden="true">↗</span></button></div>
+          </div>
+        </article>
+        <article class="menu-row reveal">
+          <div class="kit-card-top"><span>Комплект / 03</span><span>Под ключ</span></div>
+          <figure class="kit-visual" data-depth>
+            <img class="menu-thumb" src="assets/img/kit_3.png" alt="Солнечная панель, инвертор и аккумулятор — комплект 3" loading="lazy">
+            <span class="kit-image-note">Панели + инвертор + аккумулятор</span>
+          </figure>
+          <div class="kit-card-content">
+            <div class="menu-power"><span class="power-number">15</span><span class="power-unit">кВт</span></div>
+            <div class="menu-body"><h3 class="menu-name">Премиум 3 фазы</h3><p class="menu-features">Deye 15 кВт · 24 панели Jinko 640W · блок Dyness 314 А·ч · трёхфазная защита</p></div>
+            <div class="kit-card-bottom"><span class="kit-phase">3 фазы</span><button class="btn btn-outline open-lead-modal" data-title="Заказ: Комплект №3 (15 кВт)">Подробнее <span aria-hidden="true">↗</span></button></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Тестовый пошаговый подбор на месте прежнего калькулятора -->
+      <div class="calculator test-calculator reveal" id="quiz" aria-live="polite">
+        <div class="calculator-head test-calculator-head">
+          <div>
+            <span class="test-overline">ПОДБОР СИСТЕМЫ · ТЕСТОВАЯ ВЕРСИЯ</span>
+            <h3 class="calculator-title">Не знаете, какой выбрать? <span class="accent">Подберём под ваш сценарий</span></h3>
+          </div>
+          <span class="test-time">Около 5 минут · результат сразу</span>
+        </div>
+        <div class="test-calculator-grid">
+          <div class="test-quiz-main">
+            <div class="quiz-body" id="quizBody">
+              <div class="quiz-progress-wrap"><div class="test-progress"><span id="progressBar"></span></div><span id="stepLabel">Шаг 1</span></div>
+              <div id="question"></div>
+              <div class="test-quiz-actions"><button class="test-back-button" id="backBtn" type="button">← Назад</button><button class="test-primary-button" id="nextBtn" type="button">Продолжить <span aria-hidden="true">→</span></button></div>
+            </div>
+          </div>
+          <aside class="test-quiz-aside" aria-label="О подборе">
+            <span class="test-aside-label">КАК ПРОХОДИТ ПОДБОР</span>
+            <ol><li><b>01</b><span>Выберите объект</span></li><li><b>02</b><span>Отметьте нагрузки</span></li><li><b>03</b><span>Получите рекомендацию</span></li></ol>
+            <p>Рекомендация предварительная. Точный состав системы инженер рассчитает по нагрузкам вашего объекта.</p>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. УСТАНОВКА — «манифест» с крупными номерами ============ -->
+  <section class="section section-dark" id="installation">
+    <div class="container">
+      <div class="head head--light reveal">
+        <span class="kicker">02 · Что входит в установку</span>
+        <h2 class="h2">Шесть этапов, которые<br><span class="accent">мы берём на себя</span></h2>
+      </div>
+
+      <div class="manifest">
+        <div class="manifest-item reveal">
+          <span class="manifest-num">01</span>
+          <img class="manifest-icon" src="assets/icons/house.svg" alt="Монтаж оборудования">
+          <div class="manifest-body">
+            <h3>Монтаж на кровле</h3>
+            <p>Крепление панелей на кровлю любого типа или наземные конструкции.</p>
+          </div>
+        </div>
+        <div class="manifest-item reveal" style="--d:.04s">
+          <span class="manifest-num">02</span>
+          <img class="manifest-icon" src="assets/icons/shield-check.svg" alt="Подключение и защита">
+          <div class="manifest-body">
+            <h3>Подключение и защита</h3>
+            <p>Щит автоматики, УЗИП DC/AC, автоматы и контур заземления.</p>
+          </div>
+        </div>
+        <div class="manifest-item reveal" style="--d:.08s">
+          <span class="manifest-num">03</span>
+          <img class="manifest-icon" src="assets/icons/settings-2.svg" alt="Настройка инвертора и BMS">
+          <div class="manifest-body">
+            <h3>Настройка инвертора и BMS</h3>
+            <p>Синхронизация Deye и Dyness для продления ресурса батарей.</p>
+          </div>
+        </div>
+        <div class="manifest-item reveal" style="--d:.12s">
+          <span class="manifest-num">04</span>
+          <img class="manifest-icon" src="assets/icons/wifi.svg" alt="Мониторинг и Wi-Fi">
+          <div class="manifest-body">
+            <h3>Мониторинг и Wi-Fi</h3>
+            <p>Данные в облако и приложение на смартфон с русским интерфейсом.</p>
+          </div>
+        </div>
+        <div class="manifest-item reveal" style="--d:.16s">
+          <span class="manifest-num">05</span>
+          <img class="manifest-icon" src="assets/icons/power.svg" alt="Запуск системы и проверка">
+          <div class="manifest-body">
+            <h3>Запуск и стресс-тест</h3>
+            <p>Проверка под нагрузкой и переключения за 4 мс при аварии сети.</p>
+          </div>
+        </div>
+        <div class="manifest-item reveal" style="--d:.2s">
+          <span class="manifest-num">06</span>
+          <img class="manifest-icon" src="assets/icons/book-open.svg" alt="Обучение клиента">
+          <div class="manifest-body">
+            <h3>Обучение и гарантия</h3>
+            <p>Гарантийные талоны, документация и инструктаж по эксплуатации.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. ОБОРУДОВАНИЕ — «зигзаг» фото/текст ============ -->
+  <section class="section" id="equipment">
+    <div class="container">
+      <div class="head reveal">
+        <span class="kicker">03 · Оборудование</span>
+        <h2 class="h2">Комплектуем только<br><span class="accent">проверенными брендами</span></h2>
+      </div>
+
+      <div class="zig">
+        <div class="zig-row reveal">
+          <div class="zig-media"><img src="assets/img/equip_inverter.png" alt="Гибридные инверторы Deye"></div>
+          <div class="zig-body">
+            <span class="zig-tag">Инверторные системы · топ-1 в мире</span>
+            <h3>Гибридные инверторы Deye</h3>
+            <p>Мгновенное переключение 4 мс, сенсорный экран, поддержка генераторов, параллельное подключение до 16 устройств.</p>
+            <span class="zig-chip">6 / 8 / 15 кВт · 1 и 3 фазы</span>
+          </div>
+        </div>
+        <div class="zig-row zig-row--rev reveal">
+          <div class="zig-body">
+            <span class="zig-tag">Накопители энергии</span>
+            <h3>Аккумуляторы Dyness</h3>
+            <p>Надёжные LiFePO4 элементы с ресурсом свыше 6000 циклов. Высокая термическая безопасность и модульность.</p>
+            <span class="zig-chip">100 А·ч / 314 А·ч</span>
+          </div>
+          <div class="zig-media"><img src="assets/img/equip_battery.png" alt="Аккумуляторные батареи Dyness"></div>
+        </div>
+        <div class="zig-row reveal">
+          <div class="zig-media"><img src="assets/img/equip_panels.png" alt="Солнечные панели Jinko"></div>
+          <div class="zig-body">
+            <span class="zig-tag">Фотомодули TOPCon</span>
+            <h3>Панели Jinko Tiger Neo</h3>
+            <p>Монокристаллические N-Type модули с КПД 22,5%. Отличная выработка в жару и при рассеянном свете.</p>
+            <span class="zig-chip">640 Вт (TOPCon)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. КАК МЫ РАБОТАЕМ — «таймлайн» ============ -->
+  <section class="section section-alt" id="how-we-work">
+    <div class="container">
+      <div class="head reveal">
+        <span class="kicker">04 · Как мы работаем</span>
+        <h2 class="h2">От заявки<br>до запуска —<br><span class="accent">прозрачно</span></h2>
+        <div class="energy-scene" aria-hidden="true"><div class="energy-panel"></div></div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <span class="tl-num">1</span>
+          <div class="tl-icon"><img src="assets/icons/phone.svg" alt="Заявка и консультация"></div>
+          <h3>Заявка</h3>
+          <p>Консультация инженера по телефону</p>
+        </div>
+        <div class="timeline-item reveal" style="--d:.05s">
+          <span class="tl-num">2</span>
+          <div class="tl-icon"><img src="assets/icons/clipboard-check.svg" alt="Выезд на объект"></div>
+          <h3>Аудит</h3>
+          <p>Выезд на объект и расчёт мощности</p>
+        </div>
+        <div class="timeline-item reveal" style="--d:.1s">
+          <span class="tl-num">3</span>
+          <div class="tl-icon"><img src="assets/icons/file-text.svg" alt="Договор и смета"></div>
+          <h3>Договор</h3>
+          <p>Фиксация стоимости и сроков</p>
+        </div>
+        <div class="timeline-item reveal" style="--d:.15s">
+          <span class="tl-num">4</span>
+          <div class="tl-icon"><img src="assets/icons/truck.svg" alt="Доставка оборудования"></div>
+          <h3>Доставка</h3>
+          <p>Со склада в Севастополе</p>
+        </div>
+        <div class="timeline-item reveal" style="--d:.2s">
+          <span class="tl-num">5</span>
+          <div class="tl-icon"><img src="assets/icons/wrench.svg" alt="Монтаж и настройка"></div>
+          <h3>Монтаж</h3>
+          <p>Профессиональная установка за 1–2 дня</p>
+        </div>
+        <div class="timeline-item reveal" style="--d:.25s">
+          <span class="tl-num">6</span>
+          <div class="tl-icon"><img src="assets/icons/check.svg" alt="Запуск и гарантия"></div>
+          <h3>Запуск</h3>
+          <p>Пусконаладка и гарантия</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. НАШИ РАБОТЫ — «мозаика» ============ -->
+  <section class="section" id="portfolio">
+    <div class="container">
+      <div class="head reveal">
+        <span class="kicker">05 · Наши работы</span>
+        <h2 class="h2">Живые объекты <span class="accent">в Крыму</span></h2>
+      </div>
+
+      <div class="portfolio-filters reveal">
+        <button class="filter-btn active" data-filter="all">Все объекты</button>
+        <button class="filter-btn" data-filter="roof">Крышные станции</button>
+        <button class="filter-btn" data-filter="tech">Инверторы и АКБ</button>
+      </div>
+
+      <div class="portfolio-grid">
+        <a class="gallery-tile reveal" data-cat="roof" data-full="assets/img/port_1.jpg" data-name="Солнечные панели 10 кВт, Севастополь, мыс Фиолент">
+          <img src="assets/img/port_1.jpg" alt="Монтаж панелей, Севастополь">
+          <div class="gallery-overlay"><span class="gallery-tag">Флагман · 10 кВт</span><span class="gallery-title">Вилла на мысе Фиолент</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.04s" data-cat="roof" data-full="assets/img/port_2.jpg" data-name="Крышная электростанция 15 кВт, Большая Ялта">
+          <img src="assets/img/port_2.jpg" alt="Крышная станция 15 кВт">
+          <div class="gallery-overlay"><span class="gallery-title">Крышная станция 15 кВт</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.08s" data-cat="roof" data-full="assets/img/port_3.jpg" data-name="Частный дом 8 кВт, Севастополь">
+          <img src="assets/img/port_3.jpg" alt="Частный дом 8 кВт">
+          <div class="gallery-overlay"><span class="gallery-title">Частный дом 8 кВт</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.12s" data-cat="roof" data-full="assets/img/port_4.jpg" data-name="Коттедж 12 кВт, Симферополь">
+          <img src="assets/img/port_4.jpg" alt="Коттедж 12 кВт">
+          <div class="gallery-overlay"><span class="gallery-title">Коттедж 12 кВт</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.16s" data-cat="tech" data-full="assets/img/port_5.jpg" data-name="Инвертор Deye 8 кВт в котельной">
+          <img src="assets/img/port_5.jpg" alt="Инвертор Deye в котельной">
+          <div class="gallery-overlay"><span class="gallery-title">Инвертор Deye 8 кВт</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.2s" data-cat="tech" data-full="assets/img/port_6.jpg" data-name="Кабельная разводка и узел DC/AC защиты">
+          <img src="assets/img/port_6.jpg" alt="Кабельная разводка">
+          <div class="gallery-overlay"><span class="gallery-title">Узел DC/AC защиты</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.24s" data-cat="tech" data-full="assets/img/port_7.jpg" data-name="Батарейный стек Dyness 314 А·ч">
+          <img src="assets/img/port_7.jpg" alt="Батарейный стек Dyness">
+          <div class="gallery-overlay"><span class="gallery-title">Батарейный стек Dyness</span></div>
+        </a>
+        <a class="gallery-tile reveal" style="--d:.28s" data-cat="tech" data-full="assets/img/port_8.jpg" data-name="Стойка накопителей 45 кВт·ч для гостиницы">
+          <img src="assets/img/port_8.jpg" alt="Стойка накопителей">
+          <div class="gallery-overlay"><span class="gallery-title">Стойка накопителей 45 кВт·ч</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. КАТАЛОГ — «таблица-прайс» ============ -->
+  <section class="section section-alt" id="catalog">
+    <div class="container">
+      <div class="head reveal">
+        <span class="kicker">06 · Каталог</span>
+        <h2 class="h2">Оборудование <span class="accent">и актуальные цены</span></h2>
+      </div>
+
+      <div class="catalog-tabs reveal">
+        <button class="catalog-tab active" data-tab="all">Все</button>
+        <button class="catalog-tab" data-tab="inverters">Инверторы Deye</button>
+        <button class="catalog-tab" data-tab="panels">Панели Jinko</button>
+        <button class="catalog-tab" data-tab="batteries">Аккумуляторы Dyness</button>
+        <button class="catalog-tab" data-tab="pecron">Станции PECRON</button>
+      </div>
+
+      <div class="pricelist" id="catCardsContainer">
+        <div class="product-row reveal" data-group="panels">
+          <img class="pl-thumb" src="assets/img/cat_jinko.png" alt="JINKO Tiger NEO III">
+          <div class="pl-info"><span class="pl-name">JINKO Tiger NEO III 640 W</span><span class="pl-model">Солнечная панель · N-Type TOPCon</span></div>
+          <span class="pl-price">16 380 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: JINKO Tiger NEO III 640 W">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.03s" data-group="pecron">
+          <img class="pl-thumb" src="assets/img/cat_pecron_300.png" alt="PECRON 300W">
+          <div class="pl-info"><span class="pl-name">PECRON 300 Ватт</span><span class="pl-model">Портативная солнечная панель</span></div>
+          <span class="pl-price">54 272 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: PECRON 300 Ватт">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.06s" data-group="pecron">
+          <img class="pl-thumb" src="assets/img/cat_pecron_200.png" alt="PECRON 200W">
+          <div class="pl-info"><span class="pl-name">PECRON 200 Ватт</span><span class="pl-model">Портативная солнечная панель</span></div>
+          <span class="pl-price">34 734 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: PECRON 200 Ватт">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.09s" data-group="pecron">
+          <img class="pl-thumb" src="assets/img/cat_pecron_4200.jpg" alt="PECRON E3800LFP">
+          <div class="pl-info"><span class="pl-name">PECRON E3800LFP</span><span class="pl-model">Электростанция 4200 Вт / 3840 Вт·ч</span></div>
+          <span class="pl-price">238 798 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: PECRON E3800LFP">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.12s" data-group="pecron">
+          <img class="pl-thumb" src="assets/img/cat_pecron_2400.png" alt="PECRON E2400LFP">
+          <div class="pl-info"><span class="pl-name">PECRON E2400LFP</span><span class="pl-model">Электростанция 2400 Вт / 2048 Вт·ч</span></div>
+          <span class="pl-price">130 575 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: PECRON E2400LFP">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.15s" data-group="pecron">
+          <img class="pl-thumb" src="assets/img/cat_pecron_2200.png" alt="PECRON E1500LFP">
+          <div class="pl-info"><span class="pl-name">PECRON E1500LFP</span><span class="pl-model">Электростанция 2200 Вт / 1536 Вт·ч</span></div>
+          <span class="pl-price">103 559 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: PECRON E1500LFP">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.18s" data-group="inverters">
+          <img class="pl-thumb" src="assets/img/cat_deye_6k.png" alt="Deye 6 кВт">
+          <div class="pl-info"><span class="pl-name">Deye на 6 кВт (1-фазный)</span><span class="pl-model">SUN-6K-SG05 LP1-EU-AM2-P</span></div>
+          <span class="pl-price">160 146 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: Deye 6 кВт">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.21s" data-group="inverters">
+          <img class="pl-thumb" src="assets/img/cat_deye_8k.png" alt="Deye 8 кВт">
+          <div class="pl-info"><span class="pl-name">Deye на 8 кВт (1-фазный)</span><span class="pl-model">SUN-8K-SG05 LP1-EU-AM2-P</span></div>
+          <span class="pl-price">211 806 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: Deye 8 кВт">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.24s" data-group="inverters">
+          <img class="pl-thumb" src="assets/img/cat_deye_15k.png" alt="Deye 15 кВт">
+          <div class="pl-info"><span class="pl-name">Deye на 15 кВт (3-фазный)</span><span class="pl-model">SUN-15K-SG05LP3-EU-SM2</span></div>
+          <span class="pl-price">377 118 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: Deye 15 кВт">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.27s" data-group="batteries">
+          <img class="pl-thumb" src="assets/img/cat_dyness_5k.png" alt="Dyness 5.12 кВт·ч">
+          <div class="pl-info"><span class="pl-name">Dyness 5.12 кВт·ч (100 А·ч)</span><span class="pl-model">DL5.0C / 51.2V 100Ah</span></div>
+          <span class="pl-price">133 129 ₽</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: Dyness 5.12 кВт·ч">Заказать</button>
+        </div>
+        <div class="product-row reveal" style="--d:.3s" data-group="batteries">
+          <img class="pl-thumb" src="assets/img/cat_dyness_16k.png" alt="Dyness 16.076 кВт·ч">
+          <div class="pl-info"><span class="pl-name">Dyness 16.076 кВт·ч (314 А·ч)</span><span class="pl-model">PowerBrick SC / 51.2V 314Ah</span></div>
+          <span class="pl-price">По запросу</span>
+          <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ: Dyness 16.076 кВт·ч">Заказать</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. ГЕНЕРАТОР — «сравнение с разделителем» ============ -->
+  <section class="section section-dark" id="generator">
+    <div class="container">
+      <div class="head head--light reveal">
+        <span class="kicker">07 · Подключение генератора</span>
+        <h2 class="h2">Резервное питание<br><span class="accent">к вашей станции</span></h2>
+      </div>
+
+      <div class="compare">
+        <div class="compare-col reveal">
+          <h3 class="compare-title">С ручным вводом резерва</h3>
+          <ul class="compare-list">
+            <li>Подключение генератора к порту инвертора</li>
+            <li>Бережная зарядка аккумуляторов</li>
+            <li>Сигнализация и приоритеты нагрузок</li>
+            <li>Проверка совместной работы под нагрузкой</li>
+          </ul>
+        </div>
+        <div class="compare-divider reveal">или</div>
+        <div class="compare-col compare-col--hl reveal" style="--d:.1s">
+          <span class="compare-reco">Рекомендуем</span>
+          <h3 class="compare-title">С автоматическим вводом (АВР)</h3>
+          <ul class="compare-list">
+            <li>Блок автоматического ввода резерва</li>
+            <li>Настройка автоматики электростартера</li>
+            <li>Автозапуск при разряде батарей</li>
+            <li>Полный автономный цикл без человека</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prep">
+        <h3 class="prep-title reveal">Подготовка места для генератора</h3>
+        <div class="prep-grid">
+          <div class="prep-cell reveal"><div class="prep-icon"><img src="assets/icons/layers.svg" alt="Стационарная площадка"></div><span>Площадка</span></div>
+          <div class="prep-cell reveal" style="--d:.04s"><div class="prep-icon"><img src="assets/icons/umbrella.svg" alt="Защита от осадков"></div><span>Защита от осадков</span></div>
+          <div class="prep-cell reveal" style="--d:.08s"><div class="prep-icon"><img src="assets/icons/wind.svg" alt="Вентиляция"></div><span>Вентиляция</span></div>
+          <div class="prep-cell reveal" style="--d:.12s"><div class="prep-icon"><img src="assets/icons/arrow-up-right.svg" alt="Отвод газов"></div><span>Отвод газов</span></div>
+          <div class="prep-cell reveal" style="--d:.16s"><div class="prep-icon"><img src="assets/icons/warehouse.svg" alt="Кожух или навес"></div><span>Кожух / навес</span></div>
+          <div class="prep-cell reveal" style="--d:.2s"><div class="prep-icon"><img src="assets/icons/wrench.svg" alt="Другие работы"></div><span>Работы по объекту</span></div>
+        </div>
+      </div>
+
+      <div class="gen-cta reveal">
+        <p>Нужен резервный источник питания для дома или бизнеса?</p>
+        <button class="btn btn-primary open-lead-modal" data-title="Заявка на подключение генератора">Заказать подключение</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 9. СЕРВИС — «оффер-баннер» ============ -->
+  <section class="section" id="service">
+    <div class="container">
+      <div class="offer reveal">
+        <div class="offer-left">
+          <div class="offer-head">
+            <span class="kicker">Спецпредложение · Крым</span>
+            <h2 class="offer-title">Сервис и обслуживание</h2>
+            <p class="offer-gift"><strong>03</strong><span>плановых обслуживания<br>в подарок при заказе через сайт</span></p>
+          </div>
+          <ul class="offer-list">
+            <li>Диагностика силового оборудования</li>
+            <li>Протяжка клемм и проверка соединений</li>
+            <li>Проверка режимов переключения и выработки</li>
+            <li>Мойка солнечных панелей от пыли</li>
+            <li>Рекомендации по сезонной эксплуатации</li>
+          </ul>
+          <div class="offer-action">
+            <button class="btn btn-primary btn-lg open-lead-modal" data-title="Получить 3 ТО в подарок">Заказать станцию с подарком</button>
+          </div>
+        </div>
+        <figure class="offer-media" data-depth>
+          <img src="assets/img/port_8.jpg" alt="Инвертор и аккумуляторные модули на смонтированном объекте" loading="lazy">
+          <figcaption><span>Поддержка после запуска</span><strong>Всё работает.<br>Мы рядом.</strong></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10. FAQ — «нумерованный аккордеон» ============ -->
+  <section class="section section-alt" id="faq">
+    <div class="container faq-wrap">
+      <div class="head reveal">
+        <span class="kicker">08 · Вопросы и ответы</span>
+        <h2 class="h2">Коротко <span class="accent">о главном</span></h2>
+      </div>
+
+      <div class="faq-stack">
+        <div class="faq-item reveal">
+          <button class="faq-q" type="button"><span class="faq-n">01</span><span class="faq-t">Будет ли в доме электричество, если отключат сеть?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Да. Гибридная станция мгновенно переходит на питание от аккумуляторов за 4 миллисекунды. Вы продолжаете пользоваться светом, холодильником, интернетом, котлом, насосом и техникой в пределах мощности инвертора.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.03s">
+          <button class="faq-q" type="button"><span class="faq-n">02</span><span class="faq-t">Какую станцию выбрать: 6, 8 или 15 кВт?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Мощность подбирается по энергопотреблению объекта: 6 кВт — для небольших домов и дач, 8 кВт — стандарт для частного дома, 15 кВт (трёхфазный) — для просторных коттеджей с электроотоплением.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.06s">
+          <button class="faq-q" type="button"><span class="faq-n">03</span><span class="faq-t">Что входит в установку под ключ?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Инженерный аудит, доставка, монтаж панелей, установка инвертора и аккумуляторов, кабельные трассы, щиты защиты, настройка BMS, Wi-Fi-мониторинг, запуск и проверка всех режимов.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.09s">
+          <button class="faq-q" type="button"><span class="faq-n">04</span><span class="faq-t">Работают ли панели зимой и в пасмурную погоду?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Да. Современные модули N-Type улавливают рассеянный свет даже через плотные облака. В Крыму более 285 солнечных дней в году, а аккумуляторы сглаживают перепады.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.12s">
+          <button class="faq-q" type="button"><span class="faq-n">05</span><span class="faq-t">Сколько дом работает от аккумулятора?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Базовые нагрузки дома — 300–500 Вт·ч. Батарея 16 кВт·ч обеспечит свыше 24–36 часов автономии даже при нулевой выработке.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.15s">
+          <button class="faq-q" type="button"><span class="faq-n">06</span><span class="faq-t">Можно ли подключить к станции генератор?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Да. Инверторы Deye имеют отдельный вход для генератора: при критическом разряде батареи инвертор сам запустит генератор, зарядит АКБ и заглушит его.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.18s">
+          <button class="faq-q" type="button"><span class="faq-n">07</span><span class="faq-t">Можно ли установить автономное питание в квартире?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Да. Для квартир — бесшумные станции PECRON (до 4,2 кВт) или настенные блоки инвертор + LiFePO4 АКБ без внешних панелей.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.21s">
+          <button class="faq-q" type="button"><span class="faq-n">08</span><span class="faq-t">Нужно ли управлять станцией вручную?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Нет. Система работает полностью автоматически, а через приложение вы контролируете показатели со смартфона.</p></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.24s">
+          <button class="faq-q" type="button"><span class="faq-n">09</span><span class="faq-t">Требует ли станция обслуживания?</span><span class="faq-icon"></span></button>
+          <div class="faq-a"><p>Диагностика соединений и мойка панелей 1–2 раза в год. При заказе через сайт ДЭМ дарит 3 регламентных ТО бесплатно.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 11. КОНТАКТЫ + ПОДВАЛ ============ -->
+  <section class="section section-dark contacts" id="contacts">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-form reveal">
+          <span class="eyebrow">Связь с инженером</span>
+          <h2 class="contact-title">Получите расчёт стоимости</h2>
+          <p class="contact-sub">Инженер перезвонит, ответит на технические вопросы и подготовит смету под ваш объект</p>
+          <form onsubmit="handleLead(event)">
+            <label class="field"><span>Ваше имя</span><input type="text" class="input" placeholder="Александр" required></label>
+            <label class="field"><span>Номер телефона</span><input type="tel" class="input phone-mask" placeholder="+7 (___) ___-__-__" required></label>
+            <button type="submit" class="btn btn-primary btn-block">Отправить заявку на расчёт</button>
+          </form>
+        </div>
+
+        <div class="contact-info reveal" style="--d:.1s">
+          <h2 class="contact-title">Контакты</h2>
+          <div class="contact-list">
+            <div class="contact-item"><span class="contact-label">Телефон</span><a href="tel:+79835025222" class="contact-value contact-value--big">+7 (983) 502-52-22</a></div>
+            <div class="contact-item"><span class="contact-label">Электронная почта</span><a href="mailto:MD2.9@yandex.ru" class="contact-value">MD2.9@yandex.ru</a></div>
+            <div class="contact-item"><span class="contact-label">Регион работы</span><span class="contact-value">г. Севастополь, Республика Крым</span><span class="contact-cities">Севастополь · Симферополь · Ялта · Алушта · Евпатория · Феодосия</span></div>
+          </div>
+          <a href="https://t.me/+79835025222" target="_blank" class="btn btn-primary">Написать в Telegram</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-brand"><span class="footer-logo">ДЭМ</span><span class="footer-sub">дом · энергия · монтаж</span></div>
+        <div class="footer-copy">© 2026 ДЭМ (Дом Энергия Монтаж). Все права защищены.</div>
+        <div class="footer-note">Официальный монтаж станций Deye, Jinko, Dyness, PECRON в Крыму</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Модальное окно заявки -->
+  <div class="modal" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="modalLeadTitle">
+    <div class="modal-dialog">
+      <button class="modal-close" id="closeLeadModal" aria-label="Закрыть">&times;</button>
+      <span class="eyebrow">ДЭМ · заявка</span>
+      <h3 class="modal-title" id="modalLeadTitle">Оставить заявку</h3>
+      <p class="modal-sub">Инженер перезвонит в течение 10 минут</p>
+      <form onsubmit="handleLeadSubmit(event)">
+        <label class="field"><span>Ваше имя</span><input type="text" class="input" placeholder="Иван" required></label>
+        <label class="field"><span>Телефон</span><input type="tel" class="input phone-mask" placeholder="+7 (___) ___-__-__" required></label>
+        <button type="submit" class="btn btn-primary btn-block">Подтвердить заявку</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Лайтбокс -->
+  <div class="modal lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="closeLightbox" aria-label="Закрыть">&times;</button>
+      <img src="" alt="" class="lightbox-img" id="lightboxImg">
+      <div class="lightbox-title" id="lightboxTitle"></div>
+    </div>
+  </div>
+
+  <!-- Уведомление -->
+  <div class="toast" id="toast">Спасибо! Заявка зарегистрирована. Инженер ДЭМ свяжется с вами.</div>
+
+  <script src="js/main.js"></script>
+  <script src="test/test.js?v=20261009-2"></script>
 </body>
 </html>
