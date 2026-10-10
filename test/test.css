@@ -1,4 +1,4 @@
-.test-calculator { background: #f8f7f4; border: 1px solid #d8d4ce; border-radius: 3px; padding: clamp(22px, 3vw, 48px); overflow: hidden; }
+.test-calculator { scroll-margin-top: 90px; background: #f8f7f4; border: 1px solid #d8d4ce; border-radius: 3px; padding: clamp(22px, 3vw, 48px); overflow: hidden; }
 .test-calculator [hidden] { display: none !important; }
 .test-calculator-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 26px; }
 .test-overline, .test-kicker, .test-aside-label { display: block; color: var(--accent); font-family: var(--font-body); font-size: .65rem; font-weight: 700; letter-spacing: .13em; }
@@ -40,14 +40,23 @@
 .test-quiz-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
 .test-back-button { padding: 10px 0; border: 0; background: none; color: var(--ink-soft); font-family: var(--font-body); font-size: .82rem; cursor: pointer; }
 .test-back-button:disabled { opacity: .35; cursor: default; }
+.test-calculator.is-result .test-calculator-grid { grid-template-columns: minmax(0, 1.5fr) minmax(270px, .65fr); }
+.test-calculator.is-result .test-quiz-aside { align-self: start; background: #eeece8; }
 .result-badge { display: inline-block; padding: 6px 9px; background: #e7d9ce; color: #94502d; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
-.result-card h2 { margin: 12px 0; color: var(--accent); }
-.result-why { margin-bottom: 14px; }
-.result-config { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; }
-.result-config.four { grid-template-columns: repeat(2, minmax(0,1fr)); }
-.result-config div { min-width: 0; padding: 11px; border: 1px solid #d3cec6; background: #fff; font-size: .76rem; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
-.result-note { font-size: .78rem !important; }
+.result-card h2 { max-width: 840px; margin: 16px 0 12px; color: var(--accent); font-size: clamp(1.6rem, 2.5vw, 2.6rem); }
+.test-quiz-main .result-why { max-width: 710px; margin: 0; color: var(--ink); font-size: .97rem; }
+.test-quiz-main .result-section-title { margin: 29px 0 10px; font-family: var(--font-body); font-size: .69rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-soft); }
+.result-config { border-top: 1px solid #cec9c2; }
+.result-config-row { display: grid; grid-template-columns: 30px minmax(120px, .28fr) minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 15px 0; border-bottom: 1px solid #cec9c2; }
+.result-config-index { color: var(--accent); font-size: .7rem; font-weight: 700; }
+.result-config-label { color: var(--ink-soft); font-size: .79rem; }
+.result-config-value { min-width: 0; color: var(--ink); font-size: .86rem; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.test-quiz-main .result-note { max-width: 100%; margin: 22px 0 0; padding: 13px 16px; border-left: 3px solid var(--accent); background: #eeeae4; color: #59544e; font-size: .78rem; }
+.test-calculator.is-result .test-quiz-actions { margin-top: 26px; }
+.result-loads { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; }
+.test-calculator.is-result .result-loads li { padding: 6px 8px; background: #fff; border: 1px solid #d8d4ce; color: var(--ink); font-size: .74rem; font-weight: 500; line-height: 1.3; }
+.result-loads .result-loads-more { color: var(--ink-soft); background: transparent; }
 .test-calculator button:focus-visible, .test-calculator input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-@media (max-width: 800px) { .test-calculator-grid { grid-template-columns: 1fr; } .test-quiz-aside { padding: 18px 20px; } .test-quiz-aside ol { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 15px 0 0; } .test-quiz-aside li { padding: 0; border: 0; font-size: .76rem; } .test-quiz-aside p { margin-top: 12px; } }
-@media (max-width: 600px) { .test-calculator { padding: 22px 18px; margin-top: 36px; } .test-calculator-head { display: block; margin-bottom: 20px; } .test-time { display: block; margin-top: 9px; } .options-list, .result-config, .result-config.four { grid-template-columns: 1fr; } .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; } .test-primary-button { max-width: 100%; } }
+@media (max-width: 800px) { .test-calculator-grid, .test-calculator.is-result .test-calculator-grid { grid-template-columns: 1fr; } .test-quiz-aside { padding: 18px 20px; } .test-quiz-aside ol { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 15px 0 0; } .test-quiz-aside li { padding: 0; border: 0; font-size: .76rem; } .test-quiz-aside p { margin-top: 12px; } .test-calculator.is-result .test-quiz-aside { margin-top: 4px; } }
+@media (max-width: 600px) { .test-calculator { padding: 22px 18px; margin-top: 36px; } .test-calculator-head { display: block; margin-bottom: 20px; } .test-time { display: block; margin-top: 9px; } .options-list { grid-template-columns: 1fr; } .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; } .result-config-row { grid-template-columns: 26px minmax(0, 1fr); gap: 3px 10px; } .result-config-index { grid-row: 1 / 3; } .result-config-label, .result-config-value { grid-column: 2; } .test-primary-button { max-width: 100%; } .test-calculator.is-result .test-quiz-actions { align-items: stretch; flex-direction: column-reverse; } .test-calculator.is-result .test-primary-button { width: 100%; margin-top: 0; } }
 @media print { body > :not(#kits) { display: none !important; } #kits .container > :not(.test-calculator) { display: none !important; } .test-quiz-aside, .test-calculator-head, .quiz-progress-wrap, .test-quiz-actions { display: none !important; } .test-calculator { display: block !important; margin: 0 !important; border: 0; box-shadow: none; } .test-calculator-grid { display: block; } }
