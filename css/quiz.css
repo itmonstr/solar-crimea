@@ -56,7 +56,18 @@
 .result-loads { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; }
 .test-calculator.is-result .result-loads li { padding: 6px 8px; background: #fff; border: 1px solid #d8d4ce; color: var(--ink); font-size: .74rem; font-weight: 500; line-height: 1.3; }
 .result-loads .result-loads-more { color: var(--ink-soft); background: transparent; }
+.result-email { margin-top: 26px; padding: 20px; border: 1px solid #d8d4ce; background: #eeece8; }
+.result-email h3 { margin: 0 0 5px; color: var(--ink); font-family: var(--font-heading); font-size: .98rem; line-height: 1.3; }
+.test-quiz-main .result-email p { margin: 0; font-size: .8rem; }
+.result-email form { margin-top: 16px; }
+.result-email label { display: block; margin-bottom: 7px; color: var(--ink-soft); font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.result-email-controls { display: flex; gap: 8px; align-items: stretch; }
+.result-email-controls .text-field { flex: 1; }
+.result-email-controls .test-primary-button { flex: none; margin-top: 0; }
+.test-quiz-main .result-email .result-email-hint { margin-top: 10px; color: var(--ink-soft); font-size: .7rem; }
+.test-quiz-main .result-email .result-email-status { margin-top: 10px; color: var(--accent-dark); font-size: .78rem; font-weight: 600; }
 .test-calculator button:focus-visible, .test-calculator input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 800px) { .test-calculator-grid, .test-calculator.is-result .test-calculator-grid { grid-template-columns: 1fr; } .test-quiz-aside { padding: 18px 20px; } .test-quiz-aside ol { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 15px 0 0; } .test-quiz-aside li { padding: 0; border: 0; font-size: .76rem; } .test-quiz-aside p { margin-top: 12px; } .test-calculator.is-result .test-quiz-aside { margin-top: 4px; } }
 @media (max-width: 600px) { .test-calculator { padding: 22px 18px; margin-top: 36px; } .test-calculator-head { display: block; margin-bottom: 20px; } .test-time { display: block; margin-top: 9px; } .options-list { grid-template-columns: 1fr; } .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; } .result-config-row { grid-template-columns: 26px minmax(0, 1fr); gap: 3px 10px; } .result-config-index { grid-row: 1 / 3; } .result-config-label, .result-config-value { grid-column: 2; } .test-primary-button { max-width: 100%; } .test-calculator.is-result .test-quiz-actions { align-items: stretch; flex-direction: column-reverse; } .test-calculator.is-result .test-primary-button { width: 100%; margin-top: 0; } }
-@media print { body > :not(#kits) { display: none !important; } #kits .container > :not(.test-calculator) { display: none !important; } .test-quiz-aside, .test-calculator-head, .quiz-progress-wrap, .test-quiz-actions { display: none !important; } .test-calculator { display: block !important; margin: 0 !important; border: 0; box-shadow: none; } .test-calculator-grid { display: block; } }
+@media (max-width: 600px) { .result-email { padding: 16px; } .result-email-controls { flex-direction: column; } .result-email-controls .test-primary-button { width: 100%; } }
+@media print { body > :not(#kits) { display: none !important; } #kits .container > :not(.test-calculator) { display: none !important; } .test-quiz-aside, .test-calculator-head, .quiz-progress-wrap, .test-quiz-actions, .result-email { display: none !important; } .test-calculator { display: block !important; margin: 0 !important; border: 0; box-shadow: none; } .test-calculator-grid { display: block; } }

@@ -117,7 +117,23 @@
         : r.title.startsWith('PECRON')
           ? ['Мощность', 'Ёмкость', 'Формат использования']
           : ['Инвертор', 'Аккумулятор', 'Солнечные панели'];
-    return `<div class="result-card"><span class="result-badge">${esc(r.badge)}</span><h2>${esc(r.title)}</h2><p class="result-why">${esc(r.why)}</p><h3 class="result-section-title">Состав решения</h3><div class="result-config">${r.cfg.map((item, i) => `<div class="result-config-row"><span class="result-config-index">${String(i + 1).padStart(2, '0')}</span><span class="result-config-label">${esc(labels[i])}</span><strong class="result-config-value">${esc(r.title.startsWith('PECRON') && i < 2 ? item.replace(/^[^—]+—\s*/, '') : item)}</strong></div>`).join('')}</div><p class="result-note">${esc(r.note)}</p><div class="test-quiz-actions"><button class="test-back-button" type="button" id="backResult">← Изменить ответы</button><button class="test-primary-button" type="button" id="printResult">Сохранить в PDF <span>↗</span></button></div></div>`;
+    return `<div class="result-card">
+      <span class="result-badge">${esc(r.badge)}</span><h2>${esc(r.title)}</h2><p class="result-why">${esc(r.why)}</p>
+      <h3 class="result-section-title">Состав решения</h3>
+      <div class="result-config">${r.cfg.map((item, i) => `<div class="result-config-row"><span class="result-config-index">${String(i + 1).padStart(2, '0')}</span><span class="result-config-label">${esc(labels[i])}</span><strong class="result-config-value">${esc(r.title.startsWith('PECRON') && i < 2 ? item.replace(/^[^—]+—\s*/, '') : item)}</strong></div>`).join('')}</div>
+      <p class="result-note">${esc(r.note)}</p>
+      <div class="test-quiz-actions"><button class="test-back-button" type="button" id="backResult">← Изменить ответы</button><button class="test-primary-button" type="button" id="printResult">Сохранить в PDF <span>↗</span></button></div>
+      <section class="result-email" aria-labelledby="resultEmailTitle">
+        <h3 id="resultEmailTitle">Получить результат на почту</h3>
+        <p>Укажите адрес для отправки рекомендации.</p>
+        <form id="resultEmailForm">
+          <label for="resultEmail">Электронная почта</label>
+          <div class="result-email-controls"><input class="text-field" id="resultEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.ru" value="${esc(state.email)}" required><button class="test-primary-button" type="submit">Отправить на почту <span aria-hidden="true">→</span></button></div>
+        </form>
+        <p class="result-email-hint">Отправка пока не подключена.</p>
+        <p class="result-email-status" id="resultEmailStatus" role="status" hidden></p>
+      </section>
+    </div>`;
   }
   function render() {
     buildSteps(); const key = steps[index]; const total = Math.max(steps.length - 1, 1); progress.style.width = `${Math.max(30,index/total*100)}%`; stepLabel.textContent = key === 'result' ? 'Результат' : `Шаг ${index + 1}`; back.disabled = index === 0;
@@ -154,6 +170,14 @@
     next.disabled = !valid();
     $('printResult')?.addEventListener('click', () => window.print());
     $('backResult')?.addEventListener('click', () => { index = Math.max(0,index-1); render(); });
+    $('resultEmail')?.addEventListener('input', e => { state.email = e.target.value; $('resultEmailStatus').hidden = true; });
+    $('resultEmailForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      state.email = $('resultEmail').value.trim();
+      const status = $('resultEmailStatus');
+      status.textContent = 'Адрес указан. Отправка на почту пока не подключена — результат можно сохранить в PDF.';
+      status.hidden = false;
+    });
   }
   next.addEventListener('click', () => { if (valid() && index < steps.length - 1) { index++; render(); if (steps[index] === 'result') requestAnimationFrame(() => document.getElementById('quiz').scrollIntoView({ block: 'start', behavior: 'smooth' })); } });
   back.addEventListener('click', () => { index = Math.max(0,index-1); render(); });
