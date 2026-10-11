@@ -122,6 +122,10 @@
       <h3 class="result-section-title">Состав решения</h3>
       <div class="result-config">${r.cfg.map((item, i) => `<div class="result-config-row"><span class="result-config-index">${String(i + 1).padStart(2, '0')}</span><span class="result-config-label">${esc(labels[i])}</span><strong class="result-config-value">${esc(r.title.startsWith('PECRON') && i < 2 ? item.replace(/^[^—]+—\s*/, '') : item)}</strong></div>`).join('')}</div>
       <p class="result-note">${esc(r.note)}</p>
+      <section class="result-consultation" aria-labelledby="resultConsultTitle">
+        <div><span class="result-consultation-kicker">СЛЕДУЮЩИЙ ШАГ</span><h3 id="resultConsultTitle">Хотите получить подробную консультацию?</h3><p>Расскажите о своём объекте — инженер поможет уточнить состав системы.</p></div>
+        <button class="result-consultation-button" id="resultConsultBtn" type="button">Перейти к заявке <span aria-hidden="true">↓</span></button>
+      </section>
       <div class="test-quiz-actions"><button class="test-back-button" type="button" id="backResult">← Изменить ответы</button><button class="test-primary-button" type="button" id="printResult">Сохранить в PDF <span>↗</span></button></div>
       <section class="result-email" aria-labelledby="resultEmailTitle">
         <h3 id="resultEmailTitle">Получить результат на почту</h3>
@@ -170,6 +174,7 @@
     next.disabled = !valid();
     $('printResult')?.addEventListener('click', () => window.print());
     $('backResult')?.addEventListener('click', () => { index = Math.max(0,index-1); render(); });
+    $('resultConsultBtn')?.addEventListener('click', () => document.getElementById('contacts')?.scrollIntoView({ block: 'start' }));
     $('resultEmail')?.addEventListener('input', e => { state.email = e.target.value; $('resultEmailStatus').hidden = true; });
     $('resultEmailForm')?.addEventListener('submit', e => {
       e.preventDefault();
