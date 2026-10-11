@@ -55,7 +55,7 @@
     const selected = multi ? state[key] : [state[key]];
     const otherKey = {pain:'painOther',apartmentLoads:'apartmentOther',houseLoads:'houseOther',housePowerful:'housePowerfulOther',businessImpact:'businessOther',businessCritical:'businessCriticalOther'}[key];
     const otherField = otherKey && selected.includes('Другое') ? `<label class="other-field">Уточните свой вариант<input class="text-field" data-other-input="${otherKey}" value="${esc(state[otherKey])}" placeholder="Опишите своими словами"></label>` : '';
-    return `<h2 class="question-title">${title}</h2><p class="question-copy">${copy}</p><div class="options-list">${values.map(v => `<button class="option-button ${selected.includes(v) ? 'selected' : ''}" type="button" aria-pressed="${selected.includes(v)}" data-key="${key}" data-value="${esc(v)}" data-multi="${multi}"><span class="option-indicator"></span><span><b>${esc(v)}</b></span></button>`).join('')}</div>${otherField}`;
+    return `<h2 class="question-title">${title}</h2><p class="question-copy">${copy}</p><div class="options-list">${values.map(v => `<button class="option-button ${v.length > 35 || v.split(/[\s/]+/).some(word => word.length > 12) ? 'option-button--wide' : ''} ${selected.includes(v) ? 'selected' : ''}" type="button" aria-pressed="${selected.includes(v)}" data-key="${key}" data-value="${esc(v)}" data-multi="${multi}"><span class="option-indicator"></span><span><b>${esc(v)}</b></span></button>`).join('')}</div>${otherField}`;
   }
   function resultEmail() {
     return `<section class="result-email" aria-labelledby="resultEmailTitle">

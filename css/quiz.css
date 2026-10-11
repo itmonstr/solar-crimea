@@ -75,6 +75,33 @@
 .test-quiz-aside .result-email .result-email-status { margin-top: 10px; color: var(--accent-dark); font-size: .78rem; font-weight: 600; }
 .test-calculator button:focus-visible, .test-calculator input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 800px) { .test-calculator-grid, .test-calculator.is-result .test-calculator-grid { grid-template-columns: 1fr; } .test-quiz-aside { padding: 18px 20px; } .test-quiz-aside ol { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 15px 0 0; } .test-quiz-aside li { padding: 0; border: 0; font-size: .76rem; } .test-quiz-aside p { margin-top: 12px; } .test-calculator.is-result .test-quiz-aside { margin-top: 4px; } }
-@media (max-width: 600px) { .test-calculator { padding: 22px 18px; margin-top: 36px; } .test-calculator-head { display: block; margin-bottom: 20px; } .test-time { display: block; margin-top: 9px; } .options-list { grid-template-columns: 1fr; } .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; } .result-config-row { grid-template-columns: 26px minmax(0, 1fr); gap: 3px 10px; } .result-config-index { grid-row: 1 / 3; } .result-config-label, .result-config-value { grid-column: 2; } .test-primary-button { max-width: 100%; } .test-calculator.is-result .test-quiz-actions { align-items: stretch; flex-direction: column-reverse; } .test-calculator.is-result .test-primary-button { width: 100%; margin-top: 0; } }
-@media (max-width: 600px) { .result-consultation { align-items: stretch; flex-direction: column; gap: 16px; padding: 20px; } .result-consultation-button { width: 100%; } }
+@media (max-width: 600px) {
+  .test-calculator { padding: 20px 16px; margin-top: 36px; overflow: visible; }
+  .test-calculator-head { display: block; margin-bottom: 18px; }
+  .test-calculator .calculator-title { font-size: clamp(1.2rem, 5.3vw, 1.55rem); line-height: 1.18; }
+  .test-time { display: block; margin-top: 8px; font-size: .72rem; }
+  .test-calculator-grid { gap: 14px; }
+  .quiz-progress-wrap { margin-bottom: 18px; }
+  .question-copy { margin-bottom: 16px; }
+  .options-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .option-button { align-items: center; min-height: 58px; padding: 10px; }
+  .option-button .option-indicator { display: none; }
+  .option-button b { font-size: .76rem; overflow-wrap: normal; }
+  .option-button--wide { grid-column: 1 / -1; }
+  .test-quiz-main h4, .test-quiz-main h2 { font-size: 1.24rem; }
+  .test-calculator:not(.is-result) .test-quiz-aside { padding: 12px 14px; }
+  .test-calculator:not(.is-result) .test-quiz-aside .test-aside-label,
+  .test-calculator:not(.is-result) .test-quiz-aside ol { display: none; }
+  .test-calculator:not(.is-result) .test-quiz-aside p { max-width: none; margin: 0; font-size: .72rem; }
+  .test-calculator:not(.is-result) .quiz-body > .test-quiz-actions { position: sticky; bottom: 0; z-index: 3; margin: 16px -16px 0; padding: 10px 16px max(10px, env(safe-area-inset-bottom)); border-top: 1px solid #ded9d3; background: #f8f7f4; }
+  .test-calculator:not(.is-result) .quiz-body > .test-quiz-actions .test-primary-button { min-width: 155px; margin-top: 0; }
+  .result-config-row { grid-template-columns: 26px minmax(0, 1fr); gap: 3px 10px; padding: 12px 0; }
+  .result-config-index { grid-row: 1 / 3; }
+  .result-config-label, .result-config-value { grid-column: 2; }
+  .test-primary-button { max-width: 100%; }
+  .test-calculator.is-result .test-quiz-actions { align-items: stretch; flex-direction: column-reverse; }
+  .test-calculator.is-result .test-primary-button { width: 100%; margin-top: 0; }
+  .result-consultation { align-items: stretch; flex-direction: column; gap: 16px; padding: 20px; }
+  .result-consultation-button { width: 100%; }
+}
 @media print { body > :not(#kits) { display: none !important; } #kits .container > :not(.test-calculator) { display: none !important; } .test-quiz-aside, .test-calculator-head, .quiz-progress-wrap, .test-quiz-actions, .result-consultation, .result-email { display: none !important; } .test-calculator { display: block !important; margin: 0 !important; border: 0; box-shadow: none; } .test-calculator-grid { display: block; } }
