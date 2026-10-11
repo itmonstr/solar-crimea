@@ -13,6 +13,7 @@
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/refinements.css?v=20261004-hero3">
+  <link rel="stylesheet" href="css/quiz.css?v=20261011">
 </head>
 <body>
 
@@ -156,46 +157,28 @@
         </article>
       </div>
 
-      <!-- Калькулятор -->
-      <div class="calculator reveal">
-        <div class="calculator-head">
-          <h3 class="calculator-title">Не знаете, какой выбрать? <span class="accent">Подберите за 10 секунд</span></h3>
+      <!-- Подбор системы -->
+      <div class="calculator test-calculator reveal" id="quiz" aria-live="polite">
+        <div class="calculator-head test-calculator-head">
+          <div>
+            <span class="test-overline">ПОДБОР СИСТЕМЫ</span>
+            <h3 class="calculator-title">Не знаете, какой выбрать? <span class="accent">Подберём под ваш сценарий</span></h3>
+          </div>
+          <span class="test-time">Около 5 минут · результат сразу</span>
         </div>
-        <div class="calculator-grid">
-          <div class="calc-controls">
-            <div class="calc-field">
-              <span class="calc-label">Тип объекта</span>
-              <div class="calc-tabs" id="propTypeTabs">
-                <button class="calc-tab active" data-type="cottage">Коттедж</button>
-                <button class="calc-tab" data-type="house">Дом</button>
-                <button class="calc-tab" data-type="dacha">Дача</button>
-                <button class="calc-tab" data-type="hotel">Отель</button>
-              </div>
-            </div>
-            <div class="calc-field">
-              <div class="calc-label-row"><span class="calc-label">Площадь</span><span class="calc-value" id="areaCounter">160 м²</span></div>
-              <input type="range" min="40" max="450" step="10" value="160" class="range" id="sliderArea">
-            </div>
-            <div class="calc-field">
-              <span class="calc-label">Задача</span>
-              <div class="calc-tabs calc-tabs--3" id="taskTabs">
-                <button class="calc-tab active" data-task="autonomy">Автономия</button>
-                <button class="calc-tab" data-task="reserve">Резерв</button>
-                <button class="calc-tab" data-task="saving">Экономия</button>
-              </div>
+        <div class="test-calculator-grid">
+          <div class="test-quiz-main">
+            <div class="quiz-body" id="quizBody">
+              <div class="quiz-progress-wrap"><div class="test-progress"><span id="progressBar"></span></div><span id="stepLabel">Шаг 1</span></div>
+              <div id="question"></div>
+              <div class="test-quiz-actions"><button class="test-back-button" id="backBtn" type="button">← Назад</button><button class="test-primary-button" id="nextBtn" type="button">Продолжить <span aria-hidden="true">→</span></button></div>
             </div>
           </div>
-          <div class="calc-result">
-            <span class="calc-result-label">Рекомендуем</span>
-            <div class="calc-result-title" id="calcKitDisplay">Комплект №2 (8 кВт)</div>
-            <div class="calc-metrics">
-              <div class="calc-metric"><span class="val" id="calcInverterDisplay">8 кВт</span><span class="lbl">инвертор</span></div>
-              <div class="calc-metric"><span class="val" id="calcPanelsDisplay">16 шт.</span><span class="lbl">панелей</span></div>
-              <div class="calc-metric"><span class="val" id="calcBatteryDisplay">314 А·ч</span><span class="lbl">аккумулятор</span></div>
-            </div>
-            <p class="calc-result-note" id="calcNoteDisplay">Оптимально для постоянного проживания семьи: котёл, холодильники, кондиционеры, насосы.</p>
-            <button class="btn btn-primary btn-block" id="calcCtaBtn">Заказать этот комплект</button>
-          </div>
+          <aside class="test-quiz-aside" aria-label="О подборе">
+            <span class="test-aside-label">КАК ПРОХОДИТ ПОДБОР</span>
+            <ol><li><b>01</b><span>Выберите объект</span></li><li><b>02</b><span>Отметьте нагрузки</span></li><li><b>03</b><span>Получите рекомендацию</span></li></ol>
+            <p>Рекомендация предварительная. Точный состав системы инженер рассчитает по нагрузкам вашего объекта.</p>
+          </aside>
         </div>
       </div>
     </div>
@@ -680,5 +663,6 @@
   <div class="toast" id="toast">Спасибо! Заявка зарегистрирована. Инженер ДЭМ свяжется с вами.</div>
 
   <script src="js/main.js"></script>
+  <script src="js/quiz.js?v=20261011"></script>
 </body>
 </html>
