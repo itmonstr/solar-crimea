@@ -57,6 +57,18 @@
     const otherField = otherKey && selected.includes('Другое') ? `<label class="other-field">Уточните свой вариант<input class="text-field" data-other-input="${otherKey}" value="${esc(state[otherKey])}" placeholder="Опишите своими словами"></label>` : '';
     return `<h2 class="question-title">${title}</h2><p class="question-copy">${copy}</p><div class="options-list">${values.map(v => `<button class="option-button ${selected.includes(v) ? 'selected' : ''}" type="button" aria-pressed="${selected.includes(v)}" data-key="${key}" data-value="${esc(v)}" data-multi="${multi}"><span class="option-indicator"></span><span><b>${esc(v)}</b></span></button>`).join('')}</div>${otherField}`;
   }
+  function resultEmail() {
+    return `<section class="result-email" aria-labelledby="resultEmailTitle">
+      <h3 id="resultEmailTitle">Получить результат на почту</h3>
+      <p>Укажите адрес для отправки рекомендации.</p>
+      <form id="resultEmailForm">
+        <label for="resultEmail">Электронная почта</label>
+        <div class="result-email-controls"><input class="text-field" id="resultEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.ru" value="${esc(state.email)}" required><button class="test-primary-button" type="submit">Отправить на почту <span aria-hidden="true">→</span></button></div>
+      </form>
+      <p class="result-email-hint">Отправка пока не подключена.</p>
+      <p class="result-email-status" id="resultEmailStatus" role="status" hidden></p>
+    </section>`;
+  }
   function result() {
     let r;
     if (state.objectType === 'Квартира') {
@@ -127,16 +139,6 @@
         <button class="result-consultation-button" id="resultConsultBtn" type="button">Перейти к заявке <span aria-hidden="true">↓</span></button>
       </section>
       <div class="test-quiz-actions"><button class="test-back-button" type="button" id="backResult">← Изменить ответы</button><button class="test-primary-button" type="button" id="printResult">Сохранить в PDF <span>↗</span></button></div>
-      <section class="result-email" aria-labelledby="resultEmailTitle">
-        <h3 id="resultEmailTitle">Получить результат на почту</h3>
-        <p>Укажите адрес для отправки рекомендации.</p>
-        <form id="resultEmailForm">
-          <label for="resultEmail">Электронная почта</label>
-          <div class="result-email-controls"><input class="text-field" id="resultEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.ru" value="${esc(state.email)}" required><button class="test-primary-button" type="submit">Отправить на почту <span aria-hidden="true">→</span></button></div>
-        </form>
-        <p class="result-email-hint">Отправка пока не подключена.</p>
-        <p class="result-email-status" id="resultEmailStatus" role="status" hidden></p>
-      </section>
     </div>`;
   }
   function render() {
@@ -147,7 +149,7 @@
     const loadHeading = state.objectType === 'Бизнес' ? 'Последствия отключения' : 'Что важно сохранить';
     const loadItems = selectedLoads.slice(0, 5).map(item => `<li>${esc(item)}</li>`).join('');
     const remainingLoads = selectedLoads.length > 5 ? `<li class="result-loads-more">И ещё ${selectedLoads.length - 5}</li>` : '';
-    aside.innerHTML = key === 'result' ? `<span class="test-aside-label">ВАШИ ОТВЕТЫ</span><dl><div><dt>Объект</dt><dd>${esc(state.objectType)}</dd></div><div><dt>Нужная автономность</dt><dd>${esc(state.apartmentTime || state.houseDuration || state.businessDuration || 'Уточняется')}</dd></div><div><dt>${loadHeading}</dt><dd><ul class="result-loads">${loadItems}${remainingLoads}</ul></dd></div></dl>` : asideIntro;
+    aside.innerHTML = key === 'result' ? `<span class="test-aside-label">ВАШИ ОТВЕТЫ</span><dl><div><dt>Объект</dt><dd>${esc(state.objectType)}</dd></div><div><dt>Нужная автономность</dt><dd>${esc(state.apartmentTime || state.houseDuration || state.businessDuration || 'Уточняется')}</dd></div><div><dt>${loadHeading}</dt><dd><ul class="result-loads">${loadItems}${remainingLoads}</ul></dd></div></dl>${resultEmail()}` : asideIntro;
     if (key === 'contact') question.innerHTML = `<h2 class="question-title">Расскажите, как с вами связаться</h2><p class="question-copy">Контакты останутся только в этой форме. Рекомендация появится на экране после ответов.</p><div class="options-list"><label class="contact-field">Ваше имя<input class="text-field" id="name" autocomplete="name" placeholder="Имя" value="${esc(state.name)}"></label><label class="contact-field">Номер телефона<input class="text-field" id="phone" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00" value="${esc(state.phone)}"></label><label class="contact-field">Электронная почта<input class="text-field" id="email" autocomplete="email" inputmode="email" placeholder="name@example.ru" value="${esc(state.email)}"></label></div>`;
     else if (key === 'pain') question.innerHTML = options('Какие последствия отключения наиболее критичны?','Выберите один или несколько вариантов.',key,pain,true);
     else if (key === 'object') question.innerHTML = options('Где нужно обеспечить резерв?','После выбора покажем только нужные вопросы.','objectType',['Квартира','Частный дом','Бизнес']);
