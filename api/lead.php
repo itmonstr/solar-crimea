@@ -76,12 +76,18 @@ if ($page !== '') {
 }
 $message = implode("\n", $lines);
 
+$privateDir = dirname($configPath);
+flushPending($config, $privateDir);
 $emailSent = sendEmail($config, $message, $name, $phone);
-$maxSent = sendMax($config, $message, dirname($configPath));
-
-if (!$emailSent && !$maxSent) {
-    error_log('Lead delivery failed for all channels');
-    respond(502, ['ok' => false, 'message' => 'Не удалось отправить заявку. Позвоните нам по телефону.']);
+$maxSent = sendMax($config, $message, $privateDir);
+if (!$emailSent || !$maxSent) {
+    queuePending($privateDir, [
+        'message' => $message,
+        'name' => $name,
+        'phone' => $phone,
+        'need_email' => !$emailSent,
+        'need_max' => !$maxSent,
+    ]);
 }
 
 respond(200, ['ok' => true, 'message' => 'Заявка отправлена. Инженер свяжется с вами.']);
@@ -102,6 +108,58 @@ function sendEmail(array $config, string $message, string $name, string $phone):
         'Reply-To: ' . $from,
     ];
     return @mail($to, $subject, $message, implode("\r\n", $headers));
+}
+
+function queuePending(string $privateDir, array $lead): void
+{
+    $queueFile = $privateDir . '/leads-pending.ndjson';
+    $lead['queued_at'] = date(DATE_ATOM);
+    $line = json_encode($lead, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if ($line !== false) {
+        @file_put_contents($queueFile, $line . "\n", FILE_APPEND | LOCK_EX);
+    }
+}
+
+function flushPending(array $config, string $privateDir): void
+{
+    $queueFile = $privateDir . '/leads-pending.ndjson';
+    if (!is_file($queueFile)) {
+        return;
+    }
+    $lines = @file($queueFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    if (!is_array($lines) || $lines === []) {
+        return;
+    }
+    $remaining = [];
+    foreach (array_slice($lines, 0, 20) as $line) {
+        $lead = json_decode($line, true);
+        if (!is_array($lead)) {
+            continue;
+        }
+        $needEmail = (bool) ($lead['need_email'] ?? false);
+        $needMax = (bool) ($lead['need_max'] ?? false);
+        if ($needEmail) {
+            $needEmail = !sendEmail(
+                $config,
+                (string) ($lead['message'] ?? ''),
+                (string) ($lead['name'] ?? 'Заявка'),
+                (string) ($lead['phone'] ?? '')
+            );
+        }
+        if ($needMax) {
+            $needMax = !sendMax($config, (string) ($lead['message'] ?? ''), $privateDir);
+        }
+        if ($needEmail || $needMax) {
+            $lead['need_email'] = $needEmail;
+            $lead['need_max'] = $needMax;
+            $remaining[] = json_encode($lead, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }
+    }
+    foreach (array_slice($lines, 20) as $line) {
+        $remaining[] = $line;
+    }
+    $content = $remaining === [] ? '' : implode("\n", array_filter($remaining)) . "\n";
+    @file_put_contents($queueFile, $content, LOCK_EX);
 }
 
 function sendMax(array $config, string $message, string $privateDir): bool
