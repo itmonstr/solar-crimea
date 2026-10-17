@@ -3,7 +3,7 @@
 .section .head { grid-template-columns: minmax(170px, .2fr) 1fr; gap: 30px; }
 .section .h2 { max-width: 1250px; font-size: clamp(2.2rem, 4.4vw, 5rem); }
 .brand-icon img { width: 100%; height: 100%; }
-.brand-logo { display: block; width: clamp(235px, 22vw, 300px); height: auto; }
+.brand-logo { display: block; width: clamp(205px, 18vw, 245px); height: auto; }
 .brand-logo--compact { display: none; }
 .footer-brand img { display: block; width: clamp(210px, 22vw, 260px); height: auto; }
 .brand, .header-phone { flex-shrink: 0; }
@@ -137,7 +137,7 @@
 }
 @media (max-width: 600px) {
   .brand-logo--full { display: none; }
-  .brand-logo--compact { display: block; width: clamp(170px, 54vw, 205px); }
+  .brand-logo--compact { display: block; width: clamp(145px, 46vw, 175px); }
   .footer-brand img { width: min(260px, 100%); }
   .container { padding-inline: 20px; }
   .hero { background-position: 62% center; }
