@@ -607,8 +607,10 @@
           <h2 class="contact-title">Получите расчёт стоимости</h2>
           <p class="contact-sub">Инженер перезвонит, ответит на технические вопросы и подготовит смету под ваш объект</p>
           <form onsubmit="handleLead(event)">
-            <label class="field"><span>Ваше имя</span><input type="text" class="input" placeholder="Александр" required></label>
-            <label class="field"><span>Номер телефона</span><input type="tel" class="input phone-mask" placeholder="+7 (___) ___-__-__" required></label>
+            <input type="hidden" name="context" value="Заявка на расчёт стоимости">
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+            <label class="field"><span>Ваше имя</span><input type="text" name="name" class="input" placeholder="Александр" autocomplete="name" required></label>
+            <label class="field"><span>Номер телефона</span><input type="tel" name="phone" class="input phone-mask" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></label>
             <button type="submit" class="btn btn-primary btn-block">Отправить заявку на расчёт</button>
           </form>
         </div>
@@ -640,8 +642,10 @@
       <h3 class="modal-title" id="modalLeadTitle">Оставить заявку</h3>
       <p class="modal-sub">Инженер перезвонит в течение 10 минут</p>
       <form onsubmit="handleLeadSubmit(event)">
-        <label class="field"><span>Ваше имя</span><input type="text" class="input" placeholder="Иван" required></label>
-        <label class="field"><span>Телефон</span><input type="tel" class="input phone-mask" placeholder="+7 (___) ___-__-__" required></label>
+        <input type="hidden" name="context" value="Заявка с сайта">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+        <label class="field"><span>Ваше имя</span><input type="text" name="name" class="input" placeholder="Иван" autocomplete="name" required></label>
+        <label class="field"><span>Телефон</span><input type="tel" name="phone" class="input phone-mask" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></label>
         <button type="submit" class="btn btn-primary btn-block">Подтвердить заявку</button>
       </form>
     </div>
@@ -659,7 +663,7 @@
   <!-- Уведомление -->
   <div class="toast" id="toast">Спасибо! Заявка зарегистрирована. Инженер ДЭМ свяжется с вами.</div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=20261017-leads"></script>
   <script src="js/quiz.js?v=20261011-mobile"></script>
 </body>
 </html>

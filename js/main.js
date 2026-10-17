@@ -515,27 +515,69 @@ function openLeadModal(title) {
   const modal = document.getElementById('leadModal');
   const modalTitle = document.getElementById('modalLeadTitle');
   if (modalTitle) modalTitle.textContent = title;
+  const context = modal?.querySelector('[name="context"]');
+  if (context) context.value = title;
   if (modal) {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 }
 
-function handleLead(e) {
-  e.preventDefault();
-  showToast('Заявка успешно отправлена! Инженер ДЭМ перезвонит вам.');
-  e.target.reset();
+async function submitLeadForm(form, fallbackContext) {
+  const button = form.querySelector('[type="submit"]');
+  const originalLabel = button?.innerHTML;
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Отправляем…';
+  }
+  const formData = new FormData(form);
+  const payload = Object.fromEntries(formData.entries());
+  payload.context = payload.context || fallbackContext;
+  payload.page = window.location.href;
+  const endpoint = location.hostname.endsWith('github.io')
+    ? 'https://sundem.ru/api/lead.php'
+    : '/api/lead.php';
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || 'Ошибка отправки');
+    form.reset();
+    return result;
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.innerHTML = originalLabel;
+    }
+  }
 }
 
-function handleLeadSubmit(e) {
+async function handleLead(e) {
   e.preventDefault();
-  const modal = document.getElementById('leadModal');
-  if (modal) {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
+  try {
+    const result = await submitLeadForm(e.target, 'Заявка на расчёт стоимости');
+    showToast(result.message || 'Заявка успешно отправлена! Инженер ДЭМ перезвонит вам.');
+  } catch (error) {
+    showToast(error.message || 'Не удалось отправить заявку. Позвоните нам по телефону.');
   }
-  showToast('Спасибо! Ваша заявка принята инженерами ДЭМ.');
-  e.target.reset();
+}
+
+async function handleLeadSubmit(e) {
+  e.preventDefault();
+  try {
+    const result = await submitLeadForm(e.target, document.getElementById('modalLeadTitle')?.textContent || 'Заявка с сайта');
+    const modal = document.getElementById('leadModal');
+    if (modal) {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    showToast(result.message || 'Спасибо! Ваша заявка принята инженерами ДЭМ.');
+  } catch (error) {
+    showToast(error.message || 'Не удалось отправить заявку. Позвоните нам по телефону.');
+  }
 }
 
 function showToast(msg) {
