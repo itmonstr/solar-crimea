@@ -80,13 +80,15 @@ $privateDir = dirname($configPath);
 flushPending($config, $privateDir);
 $emailSent = sendEmail($config, $message, $name, $phone);
 $maxSent = sendMax($config, $message, $privateDir);
-if (!$emailSent || !$maxSent) {
+$telegramSent = sendTelegram($config, $message, $privateDir);
+if (!$emailSent || !$maxSent || !$telegramSent) {
     queuePending($privateDir, [
         'message' => $message,
         'name' => $name,
         'phone' => $phone,
         'need_email' => !$emailSent,
         'need_max' => !$maxSent,
+        'need_telegram' => !$telegramSent,
     ]);
 }
 
@@ -138,6 +140,7 @@ function flushPending(array $config, string $privateDir): void
         }
         $needEmail = (bool) ($lead['need_email'] ?? false);
         $needMax = (bool) ($lead['need_max'] ?? false);
+        $needTelegram = (bool) ($lead['need_telegram'] ?? false);
         if ($needEmail) {
             $needEmail = !sendEmail(
                 $config,
@@ -149,9 +152,13 @@ function flushPending(array $config, string $privateDir): void
         if ($needMax) {
             $needMax = !sendMax($config, (string) ($lead['message'] ?? ''), $privateDir);
         }
-        if ($needEmail || $needMax) {
+        if ($needTelegram) {
+            $needTelegram = !sendTelegram($config, (string) ($lead['message'] ?? ''), $privateDir);
+        }
+        if ($needEmail || $needMax || $needTelegram) {
             $lead['need_email'] = $needEmail;
             $lead['need_max'] = $needMax;
+            $lead['need_telegram'] = $needTelegram;
             $remaining[] = json_encode($lead, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
     }
@@ -222,6 +229,77 @@ function maxRequest(string $url, string $token, string $method = 'GET', ?string 
     curl_close($curl);
     if ($raw === false || $status < 200 || $status >= 300) {
         error_log('MAX API request failed: HTTP ' . $status . ' ' . $error);
+        return null;
+    }
+    $decoded = json_decode((string) $raw, true);
+    return is_array($decoded) ? $decoded : null;
+}
+
+function sendTelegram(array $config, string $message, string $privateDir): bool
+{
+    $token = trim((string) ($config['telegram_token'] ?? ''));
+    if ($token === '' || !function_exists('curl_init')) {
+        return false;
+    }
+    $chatId = trim((string) ($config['telegram_chat_id'] ?? ''));
+    $chatIdFile = $privateDir . '/telegram-chat-id.txt';
+    if ($chatId === '' && is_file($chatIdFile)) {
+        $chatId = trim((string) file_get_contents($chatIdFile));
+    }
+    if ($chatId === '') {
+        $chatId = discoverTelegramChatId($token);
+        if ($chatId !== '') {
+            @file_put_contents($chatIdFile, $chatId, LOCK_EX);
+        }
+    }
+    if ($chatId === '') {
+        error_log('Telegram chat_id is not available; start the bot first');
+        return false;
+    }
+
+    $response = telegramRequest($token, 'sendMessage', [
+        'chat_id' => $chatId,
+        'text' => $message,
+    ]);
+    return is_array($response) && ($response['ok'] ?? false) === true;
+}
+
+function discoverTelegramChatId(string $token): string
+{
+    $response = telegramRequest($token, 'getUpdates', [
+        'limit' => 100,
+        'timeout' => 0,
+        'allowed_updates' => ['message'],
+    ]);
+    $updates = is_array($response) && isset($response['result']) && is_array($response['result'])
+        ? $response['result']
+        : [];
+    for ($i = count($updates) - 1; $i >= 0; $i--) {
+        $chatId = $updates[$i]['message']['chat']['id'] ?? null;
+        if ($chatId !== null && $chatId !== '') {
+            return (string) $chatId;
+        }
+    }
+    return '';
+}
+
+function telegramRequest(string $token, string $method, array $payload = []): ?array
+{
+    $url = 'https://api.telegram.org/bot' . $token . '/' . $method;
+    $curl = curl_init($url);
+    curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 12,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+    ]);
+    $raw = curl_exec($curl);
+    $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+    if ($raw === false || $status < 200 || $status >= 300) {
+        error_log('Telegram API request failed: HTTP ' . $status . ' ' . $error);
         return null;
     }
     $decoded = json_decode((string) $raw, true);
