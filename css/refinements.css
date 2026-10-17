@@ -8,6 +8,8 @@
 .footer-brand img { display: block; width: clamp(210px, 22vw, 260px); height: auto; }
 .brand, .header-phone { flex-shrink: 0; }
 .brand-sub, .header-phone-num, .nav-item { white-space: nowrap; }
+.icon-btn img { transition: filter .2s ease; }
+.icon-btn:hover img { filter: brightness(0) invert(1); }
 .hero { isolation: isolate; background: #d9ddd9 url('../assets/video/solar-rooftops-poster.jpg') center center / cover no-repeat; }
 .hero::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(235,235,235,.78) 0%, rgba(235,235,235,.6) 31%, rgba(235,235,235,.24) 58%, rgba(235,235,235,.04) 100%); }
 .hero > .container { position: relative; z-index: 2; }
