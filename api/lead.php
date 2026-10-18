@@ -83,6 +83,8 @@ $maxSent = sendMax($config, $message, $privateDir);
 $telegramQueued = queueTelegram($config, $privateDir, $message);
 if (!$telegramQueued) {
     error_log('Telegram delivery queue is unavailable');
+} elseif (!triggerTelegramRelay($config)) {
+    error_log('Immediate Telegram relay trigger is unavailable; scheduled delivery will retry');
 }
 if (!$emailSent || !$maxSent) {
     queuePending($privateDir, [
@@ -144,6 +146,38 @@ function queueTelegram(array $config, string $privateDir, string $message): bool
         $entry . "\n",
         FILE_APPEND | LOCK_EX
     ) !== false;
+}
+
+function triggerTelegramRelay(array $config): bool
+{
+    $token = trim((string) ($config['github_actions_token'] ?? ''));
+    if ($token === '' || !function_exists('curl_init')) {
+        return false;
+    }
+    $url = 'https://api.github.com/repos/itmonstr/solar-crimea/actions/workflows/deliver-telegram.yml/dispatches';
+    $curl = curl_init($url);
+    curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 8,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => [
+            'Accept: application/vnd.github+json',
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+            'User-Agent: sundem-lead-relay',
+            'X-GitHub-Api-Version: 2022-11-28',
+        ],
+        CURLOPT_POSTFIELDS => '{"ref":"main"}',
+    ]);
+    curl_exec($curl);
+    $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+    if ($status !== 204) {
+        error_log('GitHub relay trigger failed: HTTP ' . $status . ' ' . $error);
+        return false;
+    }
+    return true;
 }
 
 function flushPending(array $config, string $privateDir): void
