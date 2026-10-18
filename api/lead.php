@@ -261,26 +261,44 @@ function sendMax(array $config, string $message, string $privateDir): bool
     if ($token === '' || !function_exists('curl_init')) {
         return false;
     }
-    $chatId = trim((string) ($config['max_chat_id'] ?? ''));
-    $chatIdFile = $privateDir . '/max-chat-id.txt';
-    if ($chatId === '' && is_file($chatIdFile)) {
-        $chatId = trim((string) file_get_contents($chatIdFile));
+    $chatIds = [];
+    $configured = $config['max_chat_ids'] ?? $config['max_chat_id'] ?? '';
+    if (is_array($configured)) {
+        $chatIds = array_merge($chatIds, $configured);
+    } else {
+        $chatIds = array_merge($chatIds, preg_split('/[,;\s]+/', (string) $configured) ?: []);
     }
-    if ($chatId === '') {
-        $chatId = discoverMaxChatId($token);
-        if ($chatId !== '') {
-            @file_put_contents($chatIdFile, $chatId, LOCK_EX);
+    foreach ([$privateDir . '/max-chat-id.txt', $privateDir . '/max-chat-ids.txt'] as $chatIdFile) {
+        if (is_file($chatIdFile)) {
+            $chatIds = array_merge(
+                $chatIds,
+                preg_split('/[,;\s]+/', (string) file_get_contents($chatIdFile)) ?: []
+            );
         }
     }
-    if ($chatId === '') {
+    $chatIds = array_values(array_unique(array_filter(array_map('trim', $chatIds))));
+    if ($chatIds === []) {
+        $discoveredChatId = discoverMaxChatId($token);
+        if ($discoveredChatId !== '') {
+            $chatIds[] = $discoveredChatId;
+            @file_put_contents($privateDir . '/max-chat-ids.txt', $discoveredChatId . "\n", LOCK_EX);
+        }
+    }
+    if ($chatIds === []) {
         error_log('MAX chat_id is not available; start the bot first');
         return false;
     }
 
-    $url = 'https://platform-api.max.ru/messages?chat_id=' . rawurlencode($chatId);
     $body = json_encode(['text' => $message], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    $response = maxRequest($url, $token, 'POST', $body);
-    return is_array($response) && !isset($response['error']);
+    $sent = true;
+    foreach ($chatIds as $chatId) {
+        $url = 'https://platform-api.max.ru/messages?chat_id=' . rawurlencode($chatId);
+        $response = maxRequest($url, $token, 'POST', $body);
+        if (!is_array($response) || isset($response['error'])) {
+            $sent = false;
+        }
+    }
+    return $sent;
 }
 
 function discoverMaxChatId(string $token): string
