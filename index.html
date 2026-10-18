@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/refinements.css?v=20261018-icon-hover">
+  <link rel="stylesheet" href="css/refinements.css?v=20261018-responsive-phone">
   <link rel="stylesheet" href="css/quiz.css?v=20261011-mobile">
 </head>
 <body>
@@ -40,7 +40,11 @@
       <div class="header-right">
         <a href="https://t.me/+79835025222" target="_blank" class="icon-btn" title="Написать в Telegram" aria-label="Telegram"><img src="assets/icons/send.svg" width="22" height="22" alt="">
         </a>
-        <a href="tel:+79835025222" class="icon-btn header-call" title="Позвонить" aria-label="Позвонить: +7 983 502-52-22"><img src="assets/icons/phone.svg" width="22" height="22" alt=""></a>
+        <a href="tel:+79835025222" class="header-phone header-phone-desktop" aria-label="Позвонить: +7 983 502-52-22">
+          <span class="header-phone-num">+7 (983) 502-52-22</span>
+          <span class="header-phone-sub">Севастополь и Крым</span>
+        </a>
+        <a href="tel:+79835025222" class="icon-btn header-call-mobile" title="Позвонить" aria-label="Позвонить: +7 983 502-52-22"><img src="assets/icons/phone.svg" width="22" height="22" alt=""></a>
         <button class="btn btn-primary btn-sm open-lead-modal" data-title="Заказ консультации инженера">Консультация</button>
         <button class="burger" id="burgerToggle" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>

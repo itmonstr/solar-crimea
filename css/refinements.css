@@ -185,6 +185,16 @@
   #kits .menu-thumb, .offer-media > img { transition: none; transform: none; }
 }
 
+/* Full phone number on larger screens, compact call action on phones. */
+.header-call-mobile { display: none; }
+@media (min-width: 601px) {
+  .header-phone.header-phone-desktop { display: flex; }
+}
+@media (max-width: 600px) {
+  .header-phone-desktop { display: none; }
+  .header-call-mobile { display: flex; }
+}
+
 .mobile-rail-nav { display: none; }
 /* Phone layouts use horizontal browsing, two-column indexes and image pairs. */
 @media (max-width: 600px) {
