@@ -9,7 +9,11 @@ FTP_HOST = os.environ['FTP_HOST']
 FTP_USER = os.environ['FTP_USER']
 FTP_PASSWORD = os.environ['FTP_PASSWORD']
 TELEGRAM_TOKEN = os.environ['TELEGRAM_BOT_TOKEN']
-TELEGRAM_CHAT_ID = os.environ['TELEGRAM_CHAT_ID']
+TELEGRAM_CHAT_IDS = [
+    chat_id.strip()
+    for chat_id in os.environ['TELEGRAM_CHAT_ID'].replace(';', ',').split(',')
+    if chat_id.strip()
+]
 RUN_ID = os.environ.get('GITHUB_RUN_ID', 'manual')
 RUN_ATTEMPT = os.environ.get('GITHUB_RUN_ATTEMPT', '1')
 PRIVATE_DIR = '/private'
@@ -17,9 +21,9 @@ PENDING = PRIVATE_DIR + '/telegram-pending.ndjson'
 PROCESSING = PRIVATE_DIR + f'/telegram-processing-{RUN_ID}-{RUN_ATTEMPT}.ndjson'
 
 
-def send_telegram(message):
+def send_telegram(message, chat_id):
     payload = json.dumps({
-        'chat_id': TELEGRAM_CHAT_ID,
+        'chat_id': chat_id,
         'text': message,
     }, ensure_ascii=False).encode('utf-8')
     request = urllib.request.Request(
@@ -71,8 +75,21 @@ try:
                 message = str(entry.get('message', '')).strip()
                 if not message:
                     continue
-                send_telegram(message)
-                delivered += 1
+                delivered_to = {str(chat_id) for chat_id in entry.get('delivered_to', [])}
+                failed = False
+                for chat_id in TELEGRAM_CHAT_IDS:
+                    if chat_id in delivered_to:
+                        continue
+                    try:
+                        send_telegram(message, chat_id)
+                        delivered_to.add(chat_id)
+                        delivered += 1
+                    except Exception as error:
+                        print('Telegram delivery failed: ' + type(error).__name__)
+                        failed = True
+                if failed:
+                    entry['delivered_to'] = sorted(delivered_to)
+                    failed_lines.append(json.dumps(entry, ensure_ascii=False))
             except Exception as error:
                 print('Telegram delivery failed: ' + type(error).__name__)
                 failed_lines.append(line)
@@ -83,6 +100,6 @@ try:
         ftp.storbinary('APPE ' + PENDING, io.BytesIO(content))
         raise RuntimeError(f'{len(failed_lines)} Telegram message(s) returned to queue')
 
-    print(f'Delivered Telegram messages: {delivered}')
+    print(f'Delivered Telegram notifications: {delivered}')
 finally:
     ftp.quit()
