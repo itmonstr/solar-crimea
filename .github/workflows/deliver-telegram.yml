@@ -1,0 +1,30 @@
+name: Deliver queued Telegram leads
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: telegram-lead-delivery
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+
+      - name: Deliver queued applications
+        env:
+          FTP_HOST: ${{ secrets.LEADS_FTP_HOST }}
+          FTP_USER: ${{ secrets.LEADS_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.LEADS_FTP_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.LEADS_TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.LEADS_TELEGRAM_CHAT_ID }}
+        run: python scripts/deliver_telegram_queue.py
