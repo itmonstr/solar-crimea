@@ -594,18 +594,34 @@ function initPhoneMask() {
   const inputs = document.querySelectorAll('.phone-mask');
 
   inputs.forEach(input => {
+    const formatPhone = rawValue => {
+      let digits = rawValue.replace(/\D/g, '');
+
+      // When a complete number is pasted after the visible +7 prefix,
+      // discard the duplicated country prefix.
+      if (digits.length > 11 && (digits.startsWith('77') || digits.startsWith('78'))) {
+        digits = '7' + digits.slice(2);
+      }
+      if (!digits) digits = '7';
+      if (digits[0] === '8') digits = '7' + digits.slice(1);
+      else if (digits[0] === '9') digits = '7' + digits;
+      else if (digits[0] !== '7') digits = '7' + digits;
+
+      const local = digits.slice(1, 11);
+      let formatted = '+7';
+      if (local.length > 0) formatted += ' (' + local.slice(0, 3);
+      if (local.length >= 3) formatted += ')';
+      if (local.length > 3) formatted += ' ' + local.slice(3, 6);
+      if (local.length > 6) formatted += '-' + local.slice(6, 8);
+      if (local.length > 8) formatted += '-' + local.slice(8, 10);
+      return formatted;
+    };
+
+    input.addEventListener('focus', () => {
+      if (!input.value.trim()) input.value = '+7';
+    });
     input.addEventListener('input', () => {
-      let v = input.value.replace(/\D/g, '');
-      if (!v) { input.value = ''; return; }
-      if (v[0] === '9') v = '7' + v;
-      let formatted = (v[0] === '8') ? '8 ' : '+7 ';
-
-      if (v.length > 1) formatted += '(' + v.substring(1, 4);
-      if (v.length >= 5) formatted += ') ' + v.substring(4, 7);
-      if (v.length >= 8) formatted += '-' + v.substring(7, 9);
-      if (v.length >= 10) formatted += '-' + v.substring(9, 11);
-
-      input.value = formatted;
+      input.value = formatPhone(input.value);
     });
   });
 }
