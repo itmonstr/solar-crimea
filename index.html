@@ -644,6 +644,7 @@
       <p class="modal-sub">Инженер перезвонит в течение 10 минут</p>
       <form onsubmit="handleLeadSubmit(event)">
         <input type="hidden" name="context" value="Заявка с сайта">
+        <input type="hidden" name="delivery" value="all">
         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
         <label class="field"><span>Ваше имя</span><input type="text" name="name" class="input" placeholder="Иван" autocomplete="name" required></label>
         <label class="field"><span>Телефон</span><input type="tel" name="phone" class="input phone-mask" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></label>
@@ -664,7 +665,7 @@
   <!-- Уведомление -->
   <div class="toast" id="toast">Спасибо! Заявка зарегистрирована. Инженер ДЭМ свяжется с вами.</div>
 
-  <script src="js/main.js?v=20261018-phone-prefix"></script>
-  <script src="js/quiz.js?v=20261011-mobile"></script>
+  <script src="js/main.js?v=20261018-calculator-email"></script>
+  <script src="js/quiz.js?v=20261018-calculator-email"></script>
 </body>
 </html>

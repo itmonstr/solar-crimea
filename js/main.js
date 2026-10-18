@@ -284,7 +284,7 @@ function initCalculator() {
     if (noteDisplay) noteDisplay.textContent = note;
 
     if (ctaBtn) {
-      ctaBtn.onclick = () => openLeadModal(`Заказ по калькулятору: ${kitName}`);
+      ctaBtn.onclick = () => openLeadModal(`Заказ по калькулятору: ${kitName}`, 'email_only');
     }
   }
 
@@ -511,12 +511,14 @@ function initModals() {
   });
 }
 
-function openLeadModal(title) {
+function openLeadModal(title, delivery = 'all') {
   const modal = document.getElementById('leadModal');
   const modalTitle = document.getElementById('modalLeadTitle');
   if (modalTitle) modalTitle.textContent = title;
   const context = modal?.querySelector('[name="context"]');
   if (context) context.value = title;
+  const deliveryField = modal?.querySelector('[name="delivery"]');
+  if (deliveryField) deliveryField.value = delivery;
   if (modal) {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';

@@ -59,15 +59,38 @@
   }
   function resultEmail() {
     return `<section class="result-email" aria-labelledby="resultEmailTitle">
-      <h3 id="resultEmailTitle">Получить результат на почту</h3>
-      <p>Укажите адрес для отправки рекомендации.</p>
+      <h3 id="resultEmailTitle">Передать расчёт на почту</h3>
+      <p>Укажите адрес — результаты и ответы получит инженер.</p>
       <form id="resultEmailForm">
         <label for="resultEmail">Электронная почта</label>
         <div class="result-email-controls"><input class="text-field" id="resultEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.ru" value="${esc(state.email)}" required><button class="test-primary-button" type="submit">Отправить на почту <span aria-hidden="true">→</span></button></div>
       </form>
-      <p class="result-email-hint">Отправка пока не подключена.</p>
+      <p class="result-email-hint">Ответы отправляются только на почту, без Telegram и MAX.</p>
       <p class="result-email-status" id="resultEmailStatus" role="status" hidden></p>
     </section>`;
+  }
+
+  function calculatorDetails() {
+    const labels = {
+      objectType: 'Тип объекта',
+      pain: 'Что происходит при отключении', painOther: 'Другое последствие',
+      apartmentLoads: 'Нагрузки в квартире', apartmentOther: 'Другие нагрузки',
+      apartmentTime: 'Желаемая автономность', apartmentFull: 'Полный резерв квартиры',
+      apartmentSimplicity: 'Предпочтительный формат решения',
+      houseLoads: 'Нагрузки в доме', houseOther: 'Другие нагрузки',
+      houseDuration: 'Желаемая автономность', houseComfort: 'Уровень комфорта',
+      housePowerful: 'Мощные потребители', housePowerfulOther: 'Другие мощные потребители',
+      housePhase: 'Фазность ввода', houseGenerator: 'Наличие генератора',
+      houseGeneratorConnect: 'Подключение генератора',
+      businessImpact: 'Последствия для бизнеса', businessOther: 'Другие последствия',
+      businessCritical: 'Критичная нагрузка', businessCriticalOther: 'Другая критичная нагрузка',
+      businessDuration: 'Желаемая автономность', businessGenerator: 'Наличие генератора'
+    };
+    return Object.entries(labels).flatMap(([key, label]) => {
+      const value = state[key];
+      if (Array.isArray(value)) return value.length ? [`${label}: ${value.join(', ')}`] : [];
+      return String(value || '').trim() ? [`${label}: ${String(value).trim()}`] : [];
+    }).join('\n');
   }
   function result() {
     let r;
@@ -178,12 +201,40 @@
     $('backResult')?.addEventListener('click', () => { index = Math.max(0,index-1); render(); });
     $('resultConsultBtn')?.addEventListener('click', () => document.getElementById('contacts')?.scrollIntoView({ block: 'start' }));
     $('resultEmail')?.addEventListener('input', e => { state.email = e.target.value; $('resultEmailStatus').hidden = true; });
-    $('resultEmailForm')?.addEventListener('submit', e => {
+    $('resultEmailForm')?.addEventListener('submit', async e => {
       e.preventDefault();
       state.email = $('resultEmail').value.trim();
       const status = $('resultEmailStatus');
-      status.textContent = 'Адрес указан. Отправка на почту пока не подключена — результат можно сохранить в PDF.';
       status.hidden = false;
+      const button = e.currentTarget.querySelector('[type="submit"]');
+      const originalLabel = button.innerHTML;
+      button.disabled = true;
+      button.textContent = 'Отправляем…';
+      const endpoint = location.hostname.endsWith('github.io')
+        ? 'https://sundem.ru/api/lead.php'
+        : '/api/lead.php';
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            source: 'calculator',
+            delivery: 'email_only',
+            email: state.email,
+            context: 'Результат подробного калькулятора',
+            details: calculatorDetails(),
+            page: window.location.href
+          })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.message || 'Не удалось отправить расчёт.');
+        status.textContent = result.message || 'Результаты калькулятора переданы на почту.';
+      } catch (error) {
+        status.textContent = error.message || 'Не удалось отправить расчёт. Попробуйте ещё раз.';
+      } finally {
+        button.disabled = false;
+        button.innerHTML = originalLabel;
+      }
     });
   }
   next.addEventListener('click', () => { if (valid() && index < steps.length - 1) { index++; render(); if (steps[index] === 'result') requestAnimationFrame(() => document.getElementById('quiz').scrollIntoView({ block: 'start', behavior: 'smooth' })); } });

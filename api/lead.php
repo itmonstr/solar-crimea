@@ -47,10 +47,23 @@ if (trim((string) ($payload['website'] ?? '')) !== '') {
 
 $name = clean((string) ($payload['name'] ?? ''), 100);
 $phone = clean((string) ($payload['phone'] ?? ''), 40);
+$email = clean((string) ($payload['email'] ?? ''), 160);
 $context = clean((string) ($payload['context'] ?? 'Заявка с сайта'), 180);
 $page = clean((string) ($payload['page'] ?? ''), 300);
+$details = clean((string) ($payload['details'] ?? ''), 5000);
+$delivery = clean((string) ($payload['delivery'] ?? 'all'), 20);
+$source = clean((string) ($payload['source'] ?? 'lead_form'), 40);
+$emailOnly = $delivery === 'email_only';
+$isCalculatorResult = $emailOnly && $source === 'calculator';
 
-if (mb_strlen($name) < 2 || strlen(preg_replace('/\D+/', '', $phone)) < 10) {
+if ($isCalculatorResult) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        respond(422, ['ok' => false, 'message' => 'Проверьте адрес электронной почты.']);
+    }
+    if ($name === '') {
+        $name = 'Посетитель калькулятора';
+    }
+} elseif (mb_strlen($name) < 2 || strlen(preg_replace('/\D+/', '', $phone)) < 10) {
     respond(422, ['ok' => false, 'message' => 'Проверьте имя и номер телефона.']);
 }
 
@@ -67,10 +80,20 @@ $lines = [
     'Новая заявка с сайта sundem.ru',
     '',
     'Имя: ' . $name,
-    'Телефон: ' . $phone,
     'Интерес: ' . $context,
     'Дата: ' . $createdAt,
 ];
+if ($phone !== '') {
+    array_splice($lines, 3, 0, ['Телефон: ' . $phone]);
+}
+if ($email !== '') {
+    $lines[] = 'Email: ' . $email;
+}
+if ($details !== '') {
+    $lines[] = '';
+    $lines[] = 'Ответы калькулятора:';
+    $lines[] = $details;
+}
 if ($page !== '') {
     $lines[] = 'Страница: ' . $page;
 }
@@ -79,12 +102,15 @@ $message = implode("\n", $lines);
 $privateDir = dirname($configPath);
 flushPending($config, $privateDir);
 $emailSent = sendEmail($config, $message, $name, $phone);
-$maxSent = sendMax($config, $message, $privateDir);
-$telegramQueued = queueTelegram($config, $privateDir, $message);
-if (!$telegramQueued) {
-    error_log('Telegram delivery queue is unavailable');
-} elseif (!triggerTelegramRelay($config)) {
-    error_log('Immediate Telegram relay trigger is unavailable; scheduled delivery will retry');
+$maxSent = true;
+if (!$emailOnly) {
+    $maxSent = sendMax($config, $message, $privateDir);
+    $telegramQueued = queueTelegram($config, $privateDir, $message);
+    if (!$telegramQueued) {
+        error_log('Telegram delivery queue is unavailable');
+    } elseif (!triggerTelegramRelay($config)) {
+        error_log('Immediate Telegram relay trigger is unavailable; scheduled delivery will retry');
+    }
 }
 if (!$emailSent || !$maxSent) {
     queuePending($privateDir, [
@@ -96,7 +122,10 @@ if (!$emailSent || !$maxSent) {
     ]);
 }
 
-respond(200, ['ok' => true, 'message' => 'Заявка отправлена. Инженер свяжется с вами.']);
+$successMessage = $isCalculatorResult
+    ? 'Результаты калькулятора переданы на почту.'
+    : 'Заявка отправлена. Инженер свяжется с вами.';
+respond(200, ['ok' => true, 'message' => $successMessage]);
 
 function sendEmail(array $config, string $message, string $name, string $phone): bool
 {
@@ -105,7 +134,11 @@ function sendEmail(array $config, string $message, string $name, string $phone):
     if (!filter_var($to, FILTER_VALIDATE_EMAIL) || !filter_var($from, FILTER_VALIDATE_EMAIL)) {
         return false;
     }
-    $subject = '=?UTF-8?B?' . base64_encode('Новая заявка — ' . $name . ' — ' . $phone) . '?=';
+    $subjectText = 'Новая заявка — ' . $name;
+    if ($phone !== '') {
+        $subjectText .= ' — ' . $phone;
+    }
+    $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',
